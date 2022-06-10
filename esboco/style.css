@@ -6,7 +6,9 @@
     --ces:rgb(59, 59, 59);
     --mw:#d7e1e6
 }
-
+#login{
+    cursor: default;
+}
 header{
     display: flex;
     align-items: center;

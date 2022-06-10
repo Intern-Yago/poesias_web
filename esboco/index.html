@@ -6,15 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poesias</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
     <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
     <!-- CSS only -->
-
+    
 </head>
 <body>
+    <div id="pop" class="body">
+        <div id="pop-up">
+            <button class="fechar">X</button>
+            <form>
+                <fieldset class="grupo">
+                    <div class="campo">
+                        <label for="nome"><strong>Login</strong></label>
+                        <input type="email" name="nome" id="nome">
+                    </div>
+                    <div class="campo">
+                        <label for="sobrenome"><strong>Senha</strong></label>
+                        <input type="password" name="sobrenome" id="sobrenome" >
+                    </div>
+                </fieldset> 
+                <div id="button">
+                    <input type="submit" value="Acessar" class="botao">          
+                </div>
+            </form>
+        </div>
+    </div>
     <header>
-        <img src="../img/pexels.jpg" alt="">
+        <a id="login">
+            <img src="../img/pexels.jpg" alt="">
+        </a>
         <p>
-            A poesias são uma forma de salvação. </br>Minha caneta são minhas asas e minhas palavras são minha liberatação
+            A poesia é uma forma de salvação. </br>Minha caneta são minhas asas e minhas palavras são minha liberatação
         </p>    
     </header>
     <main>
@@ -46,6 +69,8 @@
     <a href="#" class="arrow-top">
         <img src="../img/top_white.png" alt="Arrow to top">
     </a>
+    
     <script src="top.js"></script>
+    <script src="pop.js"></script>
 </body>
 </html>
