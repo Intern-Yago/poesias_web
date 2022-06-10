@@ -1,10 +1,14 @@
 *{
     margin: 0;
 }
+html {
+    scroll-behavior: smooth;
+}
 :root{
     /*Var de cor*/
     --ces:rgb(59, 59, 59);
-    --mw:#d7e1e6
+    --mw:#d7e1e6;
+    --ts:0 0.5px 4px white;
 }
 #login{
     cursor: default;
@@ -13,11 +17,11 @@ header{
     display: flex;
     align-items: center;
     background-color: #000000;
-    text-shadow: 0px 0.5px 4px #7f98a3;
+    text-shadow: var(--ts);
 }
-header p{
+header h1{
     color: var(--mw);
-    font-size: 20px;
+    font-size: 2em;
 }
 header img{
     padding-top: 10px;
@@ -27,15 +31,16 @@ header img{
     width: 150px
 }
 body{
-    background-color: rgb(165, 165, 165);
+    background-color: #5B5B5B;
 }
 .aspas_reverse{
     transform: scaleX(-1) scaleY(-1);
 }
 .poesia{
     padding: 10px 10px 10px 10px;
-    background-color: #707070;
+    background-color: #a1a1a1;
     margin: 15px 10px 0 10px;
+    text-shadow: var(--ts);
 }
 .poesia .date{
     margin-bottom: 10px;
