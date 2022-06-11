@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <!--METADADOS-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--TITULO-->
     <title>Poesias</title>
+    <!--CSS-->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="login.css">
+    <!--FAVICON-->
     <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
-    <!-- CSS only -->
-    
 </head>
 <body>
     <div id="pop" class="body">
@@ -23,7 +25,7 @@
                     </div>
                     <div class="campo">
                         <label for="sobrenome"><strong>Senha</strong></label>
-                        <input type="password" name="sobrenome" id="sobrenome" placeholder="********" maxlength="100">
+                        <input type="password" name="sobrenome" id="sobrenome" placeholder="*******" max="100">
                     </div>
                 </fieldset> 
                 <div id="button">
@@ -32,14 +34,18 @@
             </form>
         </div>
     </div>
+    <a href="#" class="arrow-top">
+        <img src="../img/top_white.png" alt="Arrow to top">
+    </a>
+    
     <header>
         <a id="login">
             <img src="../img/pexels.jpg" alt="">
         </a>
         <div id="title">
             <h1 class="titulo">
-            A poesia é uma forma de salvação.
-            As canetas são minhas asas e as palavras libertação.
+                A poesia é uma forma de salvação.
+                As canetas são minhas asas e as palavras libertação.
             </h1>
         </div>    
     </header>
@@ -49,38 +55,46 @@
                 <img src="../img/aspas.png" alt="" class="aspas">
                 <img src="../img/aspas.png" alt="" class="aspas_reverse">
                 <p class="date">xx/xx/xxxx</p>
-                <p class="escrita">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt consectetur recusandae, enim eligendi necessitatibus natus ut excepturi numquam mollitia qui iste sequi voluptatem. Obcaecati possimus dolore molestias eius tempora omnis?</p>
+                <p class="escrita">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt consectetur recusandae, enim eligendi necessitatibus natus ut excepturi numquam mollitia qui iste sequi voluptatem. Obcaecati possimus dolore molestias eius tempora omnis?
+                </p>
                 <p class="autoria">- Anonimo</p>
             </div>
         </article>
-
         <article>
             <div class="poesia">
                 <img src="../img/aspas.png" alt="" class="aspas">
                 <img src="../img/aspas.png" alt="" class="aspas_reverse">
                 <p class="date">xx/xx/xxxx</p>
-                <p class="escrita">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt error aliquam eaque maxime atque omnis tenetur praesentium, deserunt consectetur quaerat porro suscipit minima? Quibusdam pariatur illum dolorem esse quia ut.</p>
+                <p class="escrita">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt error aliquam eaque maxime atque omnis tenetur praesentium, deserunt consectetur quaerat porro suscipit minima? Quibusdam pariatur illum dolorem esse quia ut.
+                </p>
                 <p class="autoria">- Anonimo</p>
             </div>
         </article>
-        
         <article>
             <div class="poesia">
                 <img src="../img/aspas.png" alt="" class="aspas">
                 <img src="../img/aspas.png" alt="" class="aspas_reverse">
                 <p class="date">xx/xx/xxxx</p>
-                <p class="escrita">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, ducimus quis? Ipsa quaerat molestiae aut incidunt. Provident maiores aspernatur quasi repellendus! Aliquam nisi aut deleniti. Tenetur eaque alias fugiat nemo.</p>
+                <p class="escrita">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, ducimus quis? Ipsa quaerat molestiae aut incidunt. Provident maiores aspernatur quasi repellendus! Aliquam nisi aut deleniti. Tenetur eaque alias fugiat nemo.
+                </p>
                 <p class="autoria">- Anonimo</p>
             </div>
         </article>
     </main>
-    <footer>
-        
+    <footer> 
+        <address id="contato">
+            <p>Copyright &copy;</p>
+            <a href="https://github.com/Intern-Yago" class="slub github" target="_blank">
+                <img src="../img/git_white.png" alt="logo Github" class="logo git">
+                Intern-Yago
+            </a>
+        </address>
     </footer>
-    <a href="#" class="arrow-top">
-        <img src="../img/top_white.png" alt="Arrow to top">
-    </a>
-    
+
+    <!--JS-->
     <script src="scripts/top.js"></script>
     <script src="scripts/pop.js"></script>
     <script src="scripts/escrita.js"></script>
