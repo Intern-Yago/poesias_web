@@ -1,0 +1,128 @@
+/* Todos os elementos da página */
+* {
+    margin: 0;
+    padding: 0;
+}
+:root{
+    --letra:#ffffff;
+    --ls:0 0 10px rgb(0, 0, 0);
+}
+/* Elementos com o ID "titulo" */
+#titulo {
+    font-family: sans-serif;
+    color: #ffffff;
+    text-shadow: 0 0.5px 4px rgb(0, 0, 0);
+} 
+
+/* Elementos de tag <fieldset>*/
+fieldset {
+    border: 0;
+}
+
+/* Elemento de tag <body> */
+body{
+    overflow: hidden;
+    height: 100vh;
+    min-width: 100vw;
+    background-color: #5B5B5B;
+    font-family: sans-serif;
+    font-size: 1em;
+    color: var(--letra);
+    text-shadow: var(--ls);
+}
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+aside#birds img{
+    bottom: 40vh;
+    min-width: 40vw;
+    float: left;
+    position: absolute;
+    z-index: 1;
+}
+aside#casal img{
+    bottom: 3vh;
+    width: 150px;
+    position: absolute;
+    right: 0vw;
+    z-index: 0;
+}
+/* Elementos de tags <input>, <textarea> e <button> */
+input, textarea, button {
+    font-family: sans-serif;
+    font-size: 1em;
+    color: black;
+    border-radius: 5px;
+}
+
+/* Elementos de classe "campo" de tag <label> */
+.campo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.campo label {
+    color: var(--letra);
+    text-shadow: var(--ls);
+}
+
+/* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
+.campo input[type="text"], .campo textarea {
+    background-color: #E0E0F8;
+    border: 2px solid #000000;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+textarea{
+    min-width: 50vw;
+    height: 55vh;
+    cursor: url('../../img/cursor.cur'), text
+}
+
+/* Elemento de classe "botao" */
+.botao {
+    margin-top: 1.5em;
+    font-size: 1.2em;
+    background: black;
+    border: 0;
+    color: #ffffff;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+/* Elemento de classe "botao" com o estado da pseudoclasse "hover" */
+.botao:hover {
+    background: #161616;
+    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
+    text-shadow: none;
+}
+
+/* Elementos de classe botão e de tag <select> */
+.botao{
+    cursor: pointer;
+}
+
+footer{
+    margin-top: 6vh;
+    width: 100vw;
+    height: 15vh;
+    background-color: #000000;
+}
+@media (max-width: 370px){
+    #casal{
+        display: none;
+    }
+}

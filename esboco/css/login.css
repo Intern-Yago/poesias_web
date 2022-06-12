@@ -58,6 +58,7 @@ fieldset {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 40px;
     border: 10px var(--B);
     box-shadow: 0 0 0 10px var(--wt);
@@ -123,6 +124,9 @@ input{
     text-shadow: none;
 }
 
+a{
+    text-decoration: none;
+}
 /*Close*/
 .fechar{
     position: absolute;
