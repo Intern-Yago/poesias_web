@@ -5,12 +5,30 @@ import './styles.css'
 import './login.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
+import { Card } from '../../components/Card'
 
 import luaImg from '../../img/pexels.jpg'
 import gitImg from '../../img/git_white.png'
 import topImg from '../../img/top_white.png'
 
 export function Home() {
+    const autores = ['anonimo', "desconhecido","Yago","Ninguém", '5H4D0W']
+    const poesia={
+        texto: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique minus adipisci, necessitatibus vitae mollitia voluptas nemo fugit non recusandae voluptates, quibusdam dolorem! Quisquam deserunt rem ratione, nemo voluptatum atque corporis.",
+        date(){
+            return new Date().toLocaleString("pt-br", {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit',
+                hour: '2-digit',
+                minute:"2-digit",
+                second:'2-digit'
+            })
+        },
+        autor(){
+            return autores[Math.floor(Math.random() * autores.length)]
+        },
+    }
 
     function handleSubmit(e) {
         const pop = document.getElementById("pop")
@@ -64,39 +82,23 @@ export function Home() {
         </div>    
     </header>
     <main>
-        <article>
-            <div className="poesia">
-                <img src="../../img/aspas.png" alt="" className="aspas"/>
-                <img src="../../img/aspas.png" alt="" className="aspas_reverse"/>
-                <p className="date">xx/xx/xxxx</p>
-                <p className="escrita">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt consectetur recusandae, enim eligendi necessitatibus natus ut excepturi numquam mollitia qui iste sequi voluptatem. Obcaecati possimus dolore molestias eius tempora omnis?
-                </p>
-                <p className="autoria">- Anonimo</p>
-            </div>
-        </article>
-        <article>
-            <div className="poesia">
-                <img src="../../img/aspas.png" alt="" className="aspas"/>
-                <img src="../../img/aspas.png" alt="" className="aspas_reverse"/>
-                <p className="date">xx/xx/xxxx</p>
-                <p className="escrita">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt error aliquam eaque maxLengthime atque omnis tenetur praesentium, deserunt consectetur quaerat porro suscipit minima? Quibusdam pariatur illum dolorem esse quia ut.
-                </p>
-                <p className="autoria">- Anonimo</p>
-            </div>
-        </article>
-        <article>
-            <div className="poesia">
-                <img src="../../img/aspas.png" alt="" className="aspas"/>
-                <img src="../../img/aspas.png" alt="" className="aspas_reverse"/>
-                <p className="date">xx/xx/xxxx</p>
-                <p className="escrita">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, ducimus quis? Ipsa quaerat molestiae aut incidunt. Provident maiores aspernatur quasi repellendus! Aliquam nisi aut deleniti. Tenetur eaque alias fugiat nemo.
-                </p>
-                <p className="autoria">- Anonimo</p>
-            </div>
-        </article>
+        <Card 
+            date={poesia.date()}
+            mensagem={poesia.texto}
+            autor={poesia.autor()}
+        />
+        <Card 
+            date={poesia.date()}
+            mensagem={poesia.texto}
+            autor={poesia.autor()}
+        />
+        <Card 
+            date={poesia.date()}
+            mensagem={poesia.texto}
+            autor={poesia.autor()}
+        />
+        
+
     </main>
     <footer> 
         <address id="contato">
