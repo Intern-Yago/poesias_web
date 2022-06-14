@@ -1,23 +1,9 @@
-/* Todos os elementos da página */
-* {
-    margin: 0;
-    padding: 0;
-}
-:root{
-    --wt:#ffffff;
-    --ls:0 0 10px rgb(0, 0, 0);
-}
 /* Elementos com o ID "titulo" */
 #titulo {
     font-family: sans-serif;
     color: var(--wt);
-    text-shadow: 0 0.5px 4px rgb(0, 0, 0);
+    text-shadow: 0 0.5px 4px var(--bk);
 } 
-
-/* Elementos de tag <fieldset>*/
-fieldset {
-    border: 0;
-}
 
 /* Elemento de tag <body> */
 body{
@@ -73,9 +59,9 @@ input, textarea, button {
 
 /* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
 .campo input[type="text"], .campo textarea {
-    background-color: #E0E0F8;
+    background-color: var(--back);
     border: 2px solid #000000;
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    box-shadow: var(--sE);
 }
 
 form{
@@ -99,14 +85,14 @@ textarea{
     background: black;
     border: 0;
     color: var(--wt);
-    box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
+    box-shadow: var(--sE);
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }
 
 /* Elemento de classe "botao" com o estado da pseudoclasse "hover" */
 .botao:hover {
     background: #161616;
-    box-shadow: inset 2px 2px 2px rgba(0,0,0,0.2);
+    box-shadow: inset var(--sE);
     text-shadow: none;
 }
 
@@ -119,7 +105,7 @@ footer{
     margin-top: 6vh;
     width: 100vw;
     height: 15vh;
-    background-color: #000000;
+    background-color: var(--bk);
 }
 @media (max-width: 370px){
     #casal{
