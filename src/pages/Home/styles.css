@@ -84,7 +84,7 @@ footer{
     z-index: 3;
 }
 
-@media (max-width: 450px){
+@media (max-width: 500px){
     .logoSite{
         width: 35vw;
     }
