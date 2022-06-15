@@ -12,7 +12,7 @@ import gitImg from '../../img/git_white.png'
 import topImg from '../../img/top_white.png'
 
 export function Home() {
-    const autores = ['anonimo', "desconhecido","Yago","Ninguém", '5H4D0W']
+    const autores = ['anonimo', "desconhecido","Zeus","Anfitrião","Ninguém", '5H4D0W']
     const poesia={
         texto: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique minus adipisci, necessitatibus vitae mollitia voluptas nemo fugit non recusandae voluptates, quibusdam dolorem! Quisquam deserunt rem ratione, nemo voluptatum atque corporis.",
         date(){
