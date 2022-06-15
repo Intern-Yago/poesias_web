@@ -84,12 +84,12 @@ footer{
     z-index: 3;
 }
 
-@media (max-width: 500px){
+@media (max-width: 450px){
     .logoSite{
         width: 35vw;
     }
     .title{
-        font-size: 3.3vw;
+        font-size: 3vw;
     }
     .poesia{
         font-size: 3.8vw;
