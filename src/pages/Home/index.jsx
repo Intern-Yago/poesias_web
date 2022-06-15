@@ -70,14 +70,14 @@ export function Home() {
 
     <header>
         <a id="login" onClick={handleSubmit}>
-            <img src={luaImg} alt=""/>
+            <img src={luaImg} alt="" className="logoSite"/>
         </a>
         <div id="title" className="title">
             <TypeAnimation
             cursor={true}
             sequence={[`"A poesia é uma forma de salvação. As canetas são minhas asas e as palavras libertação."`]}
             className="titulo"
-            wraper='h2'
+            wrapper='h2'
             />
         </div>    
     </header>
