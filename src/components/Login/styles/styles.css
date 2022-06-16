@@ -107,6 +107,6 @@ input, .botao{
 
 /*Linhas divisórias*/
 .line{
-    width: 100%;
+    min-width: 100%;
     border-bottom: 1px var(--B);
 }

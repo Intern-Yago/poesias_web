@@ -30,3 +30,8 @@
     box-shadow: inset var(--sE);
     text-shadow: none;
 }
+@media(max-width: 600px){
+    .botao{
+        font-size: 3.2vw;
+    }
+}
