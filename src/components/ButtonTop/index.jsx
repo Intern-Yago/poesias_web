@@ -30,7 +30,9 @@ export const ScrollButton = () =>{
     return (
         <div className='scrollButton'>
             <FaArrowCircleUp onClick={scrollToTop}
-            style={{display: visible ? 'inline' : 'none'}} />
+                style={{display: visible ? 'inline' : 'none'}} 
+                className="home"
+            />
         </div>
     );
 }

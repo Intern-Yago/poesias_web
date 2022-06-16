@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "vite",
+    "online":"vite --host",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -1,51 +1,51 @@
 import {FiMail, FiLock} from 'react-icons/fi'
 import {AiOutlineGoogle, AiOutlineGithub} from 'react-icons/ai'
 
-import './styles/styles.css'
+import './styles/stylesLogin.css'
 
 export function Login(){    
     return(
-        <div id="pop" className="body activate">
-            <div id="pop-up">
-                <button className="fechar" >X</button>
+        <div id="pop" className="login body activate">
+            <div id="pop-up" className="login">
+                <button className="login fechar" >X</button>
                 <form>
-                    <fieldset className="grupo">
-                        <div className="campo">
+                    <fieldset className="login grupo">
+                        <div className="login campo">
                             <label htmlFor="nome"><strong>Login</strong></label>
-                            <div className="inline">
+                            <div className="login inline">
                                 <FiMail/>
-                                <input type="email" name="nome" id="nome" placeholder="Acesso" maxLength="100"/>
+                                <input type="email" name="nome" id="nome" placeholder="Acesso" maxLength="100" className="login"/>
                             </div>
                         </div>
-                        <div className="campo">
+                        <div className="login campo">
                             <label htmlFor="sobrenome"><strong>Senha</strong></label>
-                            <div className="inline">
+                            <div className="login inline">
                                 <FiLock/>
-                                <input type="password" name="sobrenome" id="sobrenome" placeholder="*******" maxLength="100"/>
+                                <input type="password" name="sobrenome" id="sobrenome" placeholder="*******" maxLength="100" className="login"/>
                             </div>
-                            <a href="#">
-                                <p className="forgot">Esqueceu a senha?</p>
+                            <a href="#" className="login">
+                                <p className="login forgot">Esqueceu a senha?</p>
                             </a>
                         </div>
                     </fieldset> 
                 </form>
-                <div className="inline">
-                    <a href="#">
-                        <button type="submit" className='botao logUp'>
+                <div className="login inline">
+                    <a href="#" className="login">
+                        <button type="submit" className='login botao logUp'>
                             Criar conta
                         </button>
                     </a>
-                    <a href="#">
-                        <button type='submit' className='botao logIn'>
+                    <a href="#" className="login">
+                        <button type='submit' className='login botao logIn'>
                             Acessar
                         </button>       
                     </a>
                 </div>
-                <div className='line'>
+                <div className='login line'>
                 </div>
-                <div className="other">
-                    <AiOutlineGithub className='logInOther'/>
-                    <AiOutlineGoogle className='logInOther'/>
+                <div className="login other">
+                    <AiOutlineGithub className='login logInOther'/>
+                    <AiOutlineGoogle className='login logInOther'/>
                 </div>
             </div>
         </div>

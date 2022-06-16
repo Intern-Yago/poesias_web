@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import TypeAnimation from 'react-type-animation'
 
 
-import './styles.css'
+import './stylesHome.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
 import { Card } from '../../components/Card'
@@ -37,13 +37,13 @@ export function Home() {
 
     <header>
         <a id="login" href="/poeta">
-            <img src={luaImg} alt="" className="logoSite"/>
+            <img src={luaImg} alt="" className="home logoSite"/>
         </a>
-        <div id="title" className="title">
+        <div id="title" className="home title">
             <TypeAnimation
             cursor={true}
             sequence={[`"A poesia é uma forma de salvação. As canetas são minhas asas e as palavras libertação."`]}
-            className="titulo"
+            className="home titulo"
             wrapper='h2'
             />
         </div>    
@@ -68,10 +68,10 @@ export function Home() {
 
     </main>
     <footer> 
-        <address id="contato">
+        <address id="contato" className="home">
             <p>Copyright &copy;</p>
-            <a href="https://github.com/Intern-Yago" className="slub github" target="_blank">
-                <img src={gitImg} alt="logo Github" className="logo git"/>
+            <a href="https://github.com/Intern-Yago" className="home slub github" target="_blank">
+                <img src={gitImg} alt="logo Github" className="home logo git"/>
                 Intern-Yago
             </a>
         </address>
