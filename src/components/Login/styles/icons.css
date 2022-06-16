@@ -13,6 +13,7 @@
     justify-content: space-around;
 
     cursor: pointer;
+    user-select: none;
 
     width: 50%;
     font-size: 2em;
