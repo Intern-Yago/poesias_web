@@ -79,11 +79,6 @@ footer{
     width: 30px;
 }
 
-/*Pop-up*/
-.body{
-    z-index: 3;
-}
-
 @media (max-width: 450px){
     .logoSite{
         width: 35vw;

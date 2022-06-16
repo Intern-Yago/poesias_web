@@ -1,4 +1,12 @@
+/*Geral*/
+a{
+    text-decoration: none;
+}
+form{
+    min-width: 10px;
+}
 
+/*Corpos*/
 .body{
     user-select: none;
     background-color:var(--back-color);
@@ -35,10 +43,6 @@
     animation: modal .3s;
 }
 
-form{
-    min-width: 10px;
-}
-
 /*Div input+label*/
 .campo {
     margin-bottom: 1em;
@@ -50,7 +54,7 @@ form{
 }
 
 /*estilização dos inputs*/
-input{
+input, .botao{
     background-color: var(--back);
     font-family: sans-serif;
     font-size: 1em;
@@ -68,32 +72,63 @@ input{
     background: var(--back);
 }
 
-/*estilização dos botões*/
-#button{
-    display: flex;
-    justify-content: center;
-    text-align: center;
+/*Icones dos inputs*/
+.forgot:hover{
+    text-decoration: underline var(--ces);
 }
+.inline svg{
+    background-color: #e0e0f8;;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+/*inline*/
+.inline{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Esqueceu a senha*/
+.forgot{
+    color:var(--ces);
+    cursor: pointer;
+}
+
+/*estilização dos botões - Geral*/
 .botao {
     display: block;
     font-size: 1.2em;
-    background: var(--cB);
     border: 0;
-    margin-bottom: 1em;
-    color: var(--wt);
+    margin: 0 10px 10px 0.5em;
     padding: 0.2em 0.6em;
-    box-shadow: var(--sE);
-    text-shadow: var(--sC);
     cursor: pointer;
 }
-.botao:hover {
+
+/*estilização dos botões - Acessar*/
+.logIn{
+    background: var(--cB);
+    color: var(--wt);
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
+}
+.logIn:hover {
     box-shadow: inset var(--sE);
     text-shadow: none;
 }
 
-a{
-    text-decoration: none;
+/*estilização dos botões - Criar conta*/
+.logUp{
+    background-color: #e0e0f8;
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
 }
+.logUp:hover {
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}
+
 /*Close*/
 .fechar{
     position: absolute;
@@ -108,4 +143,10 @@ a{
     cursor: pointer;
     box-shadow: 0 4px 4px 0 var(--back-color);
     font-size: 1.2em;
+}
+
+/*Linhas divisórias*/
+.line{
+    width: 100%;
+    border-bottom: 1px var(--B);
 }

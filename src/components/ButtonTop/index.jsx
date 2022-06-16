@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {FaArrowCircleUp} from 'react-icons/fa';
-import { Button } from './Styles';
+
+import './styles.css'
 
 export const ScrollButton = () =>{
     const [visible, setVisible] = useState(false)
@@ -27,10 +28,10 @@ export const ScrollButton = () =>{
     window.addEventListener('scroll', toggleVisible);
 
     return (
-        <Button>
-        <FaArrowCircleUp onClick={scrollToTop}
-        style={{display: visible ? 'inline' : 'none'}} />
-        </Button>
+        <div className='scrollButton'>
+            <FaArrowCircleUp onClick={scrollToTop}
+            style={{display: visible ? 'inline' : 'none'}} />
+        </div>
     );
 }
 
