@@ -3,18 +3,6 @@ import {AiOutlineGoogle, AiOutlineGithub} from 'react-icons/ai'
 
 import './styles/styles.css'
 
-export function VisibleLogin(e) {
-    const pop = document.getElementById("pop")
-    if (pop){
-    pop.classList.add("activate")
-    pop.addEventListener('click',(e)=>{
-        if(e.target.id == "pop" || e.target.className == 'fechar'){
-            pop.classList.remove('activate')
-        }
-    })
-}
-}
-
 export function Login(){    
     return(
         <div id="pop" className="body activate">
