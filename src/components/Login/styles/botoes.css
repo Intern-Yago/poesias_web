@@ -1,0 +1,32 @@
+/*estilização dos botões - Geral*/
+.botao {
+    display: block;
+    font-size: 1.2em;
+    border: 0;
+    margin: 0 10px 10px 0.5em;
+    padding: 0.2em 0.6em;
+    cursor: pointer;
+}
+
+/*estilização dos botões - Acessar*/
+.logIn{
+    background: var(--cB);
+    color: var(--wt);
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
+}
+.logIn:hover {
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}
+
+/*estilização dos botões - Criar conta*/
+.logUp{
+    background-color: #e0e0f8;
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
+}
+.logUp:hover {
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}

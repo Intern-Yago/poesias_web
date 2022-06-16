@@ -1,6 +1,9 @@
-import {FiMail} from 'react-icons/fi'
-import {GiPadlock} from 'react-icons/gi'
-import './styles.css'
+import {FiMail, FiLock} from 'react-icons/fi'
+import {AiOutlineGoogle, AiOutlineGithub} from 'react-icons/ai'
+
+import './styles/styles.css'
+import './styles/icons.css'
+import './styles/botoes.css'
 
 export function VisibleLogin(e) {
     const pop = document.getElementById("pop")
@@ -31,7 +34,7 @@ export function Login(){
                         <div className="campo">
                             <label htmlFor="sobrenome"><strong>Senha</strong></label>
                             <div className="inline">
-                                <GiPadlock/>
+                                <FiLock/>
                                 <input type="password" name="sobrenome" id="sobrenome" placeholder="*******" maxLength="100"/>
                             </div>
                             <a href="#">
@@ -53,6 +56,10 @@ export function Login(){
                     </a>
                 </div>
                 <div className='line'>
+                </div>
+                <div className="other">
+                    <AiOutlineGithub className='logInOther'/>
+                    <AiOutlineGoogle className='logInOther'/>
                 </div>
             </div>
         </div>
