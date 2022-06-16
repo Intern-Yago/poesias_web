@@ -46,7 +46,7 @@ export function Login(){
                             Criar conta
                         </button>
                     </a>
-                    <a href="poeta.html">
+                    <a href="#">
                         <button type='submit' className='botao logIn'>
                             Acessar
                         </button>       
