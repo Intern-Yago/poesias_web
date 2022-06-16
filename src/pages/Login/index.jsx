@@ -2,8 +2,6 @@ import {FiMail, FiLock} from 'react-icons/fi'
 import {AiOutlineGoogle, AiOutlineGithub} from 'react-icons/ai'
 
 import './styles/styles.css'
-import './styles/icons.css'
-import './styles/botoes.css'
 
 export function VisibleLogin(e) {
     const pop = document.getElementById("pop")
@@ -19,7 +17,7 @@ export function VisibleLogin(e) {
 
 export function Login(){    
     return(
-        <div id="pop" className="body">
+        <div id="pop" className="body activate">
             <div id="pop-up">
                 <button className="fechar" >X</button>
                 <form>

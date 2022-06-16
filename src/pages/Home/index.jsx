@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import TypeAnimation from 'react-type-animation'
 
+
 import './styles.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
 import { Card } from '../../components/Card'
-import { Login,VisibleLogin } from '../../components/Login'
+import { Poeta } from '../Poeta'
 
 import luaImg from '../../img/pexels.jpg'
 import gitImg from '../../img/git_white.png'
@@ -32,11 +33,10 @@ export function Home() {
 
   return (
     <>
-    <Login/>
     <ScrollButton/>
 
     <header>
-        <a id="login" onClick={VisibleLogin}>
+        <a id="login" href="/poeta">
             <img src={luaImg} alt="" className="logoSite"/>
         </a>
         <div id="title" className="title">
