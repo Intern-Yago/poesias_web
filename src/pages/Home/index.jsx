@@ -1,16 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import TypeAnimation from 'react-type-animation'
-
-
+import {Link} from 'react-router-dom'
 import './stylesHome.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
 import { Card } from '../../components/Card'
-import { Poeta } from '../Poeta'
 
 import luaImg from '../../img/pexels.jpg'
 import gitImg from '../../img/git_white.png'
-import topImg from '../../img/top_white.png'
 
 export function Home() {
     const autores = ['anonimo', "desconhecido","Zeus","Anfitrião","Ninguém", '5H4D0W']
@@ -36,9 +33,9 @@ export function Home() {
     <ScrollButton/>
 
     <header>
-        <a id="login" href="/poeta">
+        <Link to="/poeta" id="login">
             <img src={luaImg} alt="" className="home logoSite"/>
-        </a>
+        </Link>
         <div id="title" className="home title">
             <TypeAnimation
             cursor={true}
