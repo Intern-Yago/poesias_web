@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import './stylesPoeta.css'
 
+import birds from '../../img/birds.png'
+import casal from '../../img/casal.png'
+
 export function Poeta() {
   return (
     <div className="body poeta">
@@ -9,7 +12,7 @@ export function Poeta() {
         <h1 id="titulo" className="poeta" >Seja Bem-Vindo</h1>
       </div>
       <br/>
-      <form className="poeta" >
+      <form className="poeta" action='/' method="get">
         <fieldset className="poeta grupo">
           <div className="poeta campo">
             <label htmlFor="autor" className="poeta">
@@ -17,7 +20,7 @@ export function Poeta() {
                 Nome
               </strong>
             </label>
-            <input type="text" name="autor" id="autor" required className="poeta" />
+            <input type="text" name="autor" id="autor" required className="poeta" autoFocus/>
           </div>
         </fieldset> 
 
@@ -33,19 +36,17 @@ export function Poeta() {
         </div>
 
         {/*<!-- Botão para enviar o formulário -->*/}
-        <a href="index.html" className="poeta" >
-          <button className="poeta botao" type="submit">Concluído</button>            
-        </a>
+        <button className="poeta botao" type="submit">Concluído</button>            
 
       </form>
     </main>
 
     <aside id="birds" className="poeta" >
-      <img src="../../img/birds.png" alt="" className="poeta"/>
+      <img src={birds} alt="" className="poeta"/>
     </aside>
 
     <aside id="casal" className="poeta" >
-      <img src="../../img/casal.png" alt="" className="poeta" />
+      <img src={casal} alt="" className="poeta" />
     </aside>
 
     <footer className="poeta" > 
