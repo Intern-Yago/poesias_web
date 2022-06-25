@@ -1,0 +1,181 @@
+/*Geral*/
+a.login{
+    text-decoration: none;
+}
+form.login{
+    min-width: 10px;
+}
+
+/*Corpos*/
+.login.body{
+    user-select: none;
+    background-color:var(--back-color);
+    font-family: sans-serif;
+    font-size: 1em;
+    color: var(--bk);
+    min-height: 100vh;
+    min-width: 100vw;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position:fixed;
+    z-index: 1000;
+}
+.body.activate.login{
+    display: flex;
+}
+
+/*principal*/
+#pop-up.login{
+    background-color: var(--wt);
+    width: 30%;
+    min-width: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 40px 25px 40px;
+    border: 10px var(--B);
+    box-shadow: 0 0 0 10px var(--wt);
+    position: relative;
+}
+.activate #pop-up.login{
+    animation: modal .3s;
+}
+
+/*Div input+label*/
+.campo.login {
+    margin-bottom: 1em;
+}
+.campo.login label {
+    margin-bottom: 0.2em;
+    color: var(--bk);
+    display: block;
+}
+
+/*estilização dos inputs*/
+input.login, .botao.login{
+    background-color: var(--back);
+    font-family: sans-serif;
+    font-size: 1em;
+    color: var(--bk);
+    border-radius: 5px;
+}
+.campo input[type="email"].login,.campo input[type="password"].login{
+    padding: 0.2em;
+    border: 1px var(--cB);
+    box-shadow: var(--sE);
+    display: block;
+    max-width: 26vw;
+}
+.campo.login input:focus{
+    background: var(--back);
+}
+
+/*inline*/
+.inline.login{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Esqueceu a senha*/
+.forgot.login{
+    color:var(--ces);
+    cursor: pointer;
+}
+.forgot.login:hover{
+    text-decoration: underline var(--ces);
+}
+
+/*Close*/
+.fechar.login{
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid var(--wt);
+    background-color: var(--bk);
+    color: var(--wt);
+    cursor: pointer;
+    box-shadow: 0 4px 4px 0 var(--back-color);
+    font-size: 1.2em;
+}
+
+/*Linhas divisórias*/
+.line.login{
+    min-width: 100%;
+    border-bottom: 1px var(--B);
+}
+/*estilização dos botões - Geral*/
+.botao.login{
+    display: block;
+    font-size: 1.2em;
+    border: 0;
+    margin: 0 10px 10px 0.5em;
+    padding: 0.2em 0.6em;
+    cursor: pointer;
+}
+
+/*estilização dos botões - Acessar*/
+.logIn.login{
+    background: var(--cB);
+    color: var(--wt);
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
+}
+.logIn.login:hover {
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}
+
+/*estilização dos botões - Criar conta*/
+.logUp.login{
+    background-color: #e0e0f8;
+    box-shadow: var(--sE);
+    text-shadow: var(--sC);
+}
+.logUp.login:hover {
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}
+@media(max-width: 600px){
+    .botao.login{
+        font-size: 3.2vw;
+    }
+}
+/*Icones dos inputs*/
+.inline.login svg{
+    background-color: #e0e0f8;;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+/*Icones - other*/
+/*container*/
+.other.login{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    cursor: pointer;
+    user-select: none;
+
+    width: 50%;
+    font-size: 2em;
+    
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+/*icones*/
+.logInOther.login{
+    transition: all 0.2s ease-in;
+}
+.logInOther.login:hover{
+    font-size: 1.5em;
+    animation: giro .5s normal;
+}
