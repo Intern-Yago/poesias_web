@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    scroll-behavior: smooth;
+}
+:root{
+    /*Var de cor*/
+    --ces:rgb(59, 59, 59);
+    --mw:#d7e1e6;
+    --ts:0 0.5px 4px white;
+    --sC: 0px 0.5px 4px #7f98a3;
+    --sE: 2px 2px 2px rgba(0,0,0,0.2);
+    --B: solid rgb(128, 128, 128);
+    --cB: rgb(128, 128, 128);
+    --wt: rgb(255, 255, 255);
+    --bk: rgb(0,0,0);
+    --back:#e0e0f8b6;
+    --back-color:rgba(0,0,0,0.5);
+    --letra:#ffffff;
+    --ls:0 0 10px rgb(0, 0, 0);
+}
+fieldset {
+    border: 0;
+}
