@@ -7,7 +7,6 @@ export function Login(){
     return(
         <div id="pop" className="login body activate">
             <div id="pop-up" className="login">
-                <button className="login fechar" >X</button>
                 <form>
                     <fieldset className="login grupo">
                         <div className="login campo">

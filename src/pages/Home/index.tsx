@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import TypeAnimation from 'react-type-animation'
-import {Link} from 'react-router-dom'
 import './stylesHome.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
@@ -33,9 +32,9 @@ export function Home() {
     <ScrollButton/>
 
     <header>
-        <Link to="/poeta" id="login">
+        <a href="../poeta" id="login">
             <img src={luaImg} alt="" className="home logoSite"/>
-        </Link>
+        </a>
         <div id="title" className="home title">
             <TypeAnimation
             cursor={true}
