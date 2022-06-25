@@ -4,8 +4,8 @@ import {Login} from './pages/Login'
 
 function App() {
   return (
-    //<Home/>
-    <Login/>
+    <Home/>
+    //<Login/>
     //<Poeta/>
   )
 }
