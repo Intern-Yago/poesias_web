@@ -1,12 +1,15 @@
-import {Home} from './pages/Home'
-import {Poeta} from './pages/Poeta'
-import {Login} from './pages/Login'
+import { Router } from './Router'
+import { ApolloProvider } from '@apollo/client'
+import { client } from './lib/apollo'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
-    <Home/>
-    //<Login/>
-    //<Poeta/>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </ApolloProvider>
   )
 }
 

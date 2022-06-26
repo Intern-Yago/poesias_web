@@ -6,9 +6,12 @@ import { ScrollButton } from '../../components/ButtonTop'
 import { Card } from '../../components/Card'
 
 import luaImg from '../../img/pexels.jpg'
-import gitImg from '../../img/git_white.png'
 import { gql, useQuery } from '@apollo/client'
+import { Link, useParams } from 'react-router-dom'
 
+import { CardProps } from '../../interfaces/CardProps'
+import { Sidebar } from '../../components/Sidebar'
+import { Poetry } from '../../components/Poetry'
 const GET_POETRYS_QUERY = gql`
     query{
         publishes{
@@ -20,24 +23,16 @@ const GET_POETRYS_QUERY = gql`
 }
 `
 
-interface Publish{
-    id:string;
-    date:string;
-    poeta:string;
-    poesia:string;
-}
-
 export function Home() {
-    const {data} = useQuery<{publishes:Publish[]}>(GET_POETRYS_QUERY)
-
+    const {data} = useQuery<{publishes:CardProps[]}>(GET_POETRYS_QUERY)
+    const {slug} = useParams<{slug:string}>()
   return (
     <>
     <ScrollButton/>
-
     <header>
-        <a href="../poeta" id="login">
+        <Link to="/poeta" id="login">
             <img src={luaImg} alt="" className="home logoSite"/>
-        </a>
+        </Link>
         <div id="title" className="home title">
             <TypeAnimation
             cursor={true}
@@ -47,29 +42,23 @@ export function Home() {
             />
         </div>    
     </header>
-    <main>        
+    {slug?<Poetry/>:console.log("helloo")}
+    <main>       
      {
         data?.publishes.map(publish=>{
             return <Card
                 key={publish.id}
-                mensagem={publish.poesia}
-                autor={publish.poeta}
-                date={publish.date.split('-').reverse().join('-')}
+                poesia={publish.poesia}
+                poeta={publish.poeta}
+                date={publish.date}
+                slug={publish.id}
             />
         })
      }
      
         
     </main>
-    <footer> 
-        <address id="contato" className="home">
-            <p>Copyright &copy;</p>
-            <a href="https://github.com/Intern-Yago" className="home slub github" target="_blank">
-                <img src={gitImg} alt="logo Github" className="home logo git"/>
-                Intern-Yago
-            </a>
-        </address>
-    </footer>
+    <Sidebar/>
 
     {/*<!--JS-->
     <script src="/top.js"></script>

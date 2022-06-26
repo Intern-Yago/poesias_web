@@ -7,6 +7,12 @@
     background-color: #a1a1a1;
     margin: 15px 10px 0 10px;
     text-shadow: var(--ts);
+    color: black;
+    border: none;
+    transition: all 0.2s ease-in;
+}
+.card_link .poesia:hover{
+    border: 3px solid white;
 }
 .poesia .date{
     margin-bottom: 10px;
@@ -14,4 +20,7 @@
 .poesia .autoria{
     font-style: italic;
     text-align: right;
+}
+.card_link{
+    text-decoration: none;
 }

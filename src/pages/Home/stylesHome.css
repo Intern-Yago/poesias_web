@@ -42,44 +42,6 @@ body{
     background-color: #5B5B5B;
 }
 
-/*Rodapé*/
-address{
-    font-style: italic;
-}
-footer{
-    width: 100%;
-    margin-top: 20px;
-    color: white;
-    background-color: black;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-#contato{
-    padding: 15px;
-}
-
-#contato p{
-    margin-top: 8px;
-    margin-bottom: 5px;
-    border-bottom: 1px white solid;
-}
-.logo{
-    padding-top: 15px;
-    width: 25px;
-}
-#contato a, .logo{
-    color: white;
-    text-decoration: none;
-    transition: all 0.2s ease-in;
-}
-#contato a:hover, #contato a:hover .logo{
-    text-shadow: 0.5px 1px 1px white;
-    text-decoration: underline;
-    font-size: 17px;
-    width: 30px;
-}
-
 @media (max-width: 450px){
     .logoSite{
         width: 35vw;
