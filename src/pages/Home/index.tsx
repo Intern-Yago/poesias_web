@@ -42,7 +42,10 @@ export function Home() {
             />
         </div>    
     </header>
-    {slug?<Poetry/>:console.log("helloo")}
+    {slug
+            ?<Poetry publishSlug={slug}/>
+            :<div/>
+    }
     <main>       
      {
         data?.publishes.map(publish=>{
