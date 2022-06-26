@@ -61,7 +61,7 @@ input.login, .botao.login{
     color: var(--bk);
     border-radius: 5px;
 }
-.campo input[type="email"].login,.campo input[type="password"].login{
+.campo input.login{
     padding: 0.2em;
     border: 1px var(--cB);
     box-shadow: var(--sE);
@@ -87,22 +87,6 @@ input.login, .botao.login{
 }
 .forgot.login:hover{
     text-decoration: underline var(--ces);
-}
-
-/*Close*/
-.fechar.login{
-    position: absolute;
-    top: -30px;
-    right: -30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 4px solid var(--wt);
-    background-color: var(--bk);
-    color: var(--wt);
-    cursor: pointer;
-    box-shadow: 0 4px 4px 0 var(--back-color);
-    font-size: 1.2em;
 }
 
 /*Linhas divisórias*/
