@@ -96,6 +96,7 @@ export function Login(){
         })
         .then(resp => {
             setMessage(resp.data.msg)
+            console.log(resp);
             setType(resp.data.type)
             if(resp.data.type=="success"){
                 setTimeout(()=>{

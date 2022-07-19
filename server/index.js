@@ -50,7 +50,7 @@ app.post("/login", (req,res)=>{
         if(err){
             res.send(err);
         }
-        if(result.length > 0){
+        else if(result.length > 0){
             res.send({msg: "Usuário logado com sucesso", type: 'success'})
         }
         else{
