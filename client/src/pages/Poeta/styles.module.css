@@ -1,13 +1,24 @@
-#titulo.poeta {
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.container h1{
     font-family: sans-serif;
     color: var(--wt);
     text-shadow: 0 0.5px 4px var(--bk);
 } 
+.container a{
+    background-color: transparent;
+    cursor: pointer;
+}
+.container a img{
+    width: 5em;
+}
 
 /* Elemento de tag <body> */
-.body.poeta{
-    overflow-x: hidden;
-    overflow-y: hidden;
+.body_poeta{
     height: 100vh;
     min-width: 100vw;
     background-color: #5B5B5B;
@@ -16,28 +27,34 @@
     color: var(--wt);
     text-shadow: var(--ls);
 }
-main.poeta{
+
+.main{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-aside.poeta#birds img{
+.birds img{
     bottom: 40vh;
     min-width: 40vw;
     float: left;
     position: absolute;
     z-index: 1;
 }
-aside.poeta#casal img{
+.casal img{
     bottom: 3vh;
     width: 150px;
     position: absolute;
     right: 0vw;
     z-index: 0;
 }
+.aside{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 /* Elementos de tags <input>, <textarea> e <button> */
-input.poeta, textarea.poeta, button.poeta {
+.nsme, .textarea, .botao {
     font-family: sans-serif;
     font-size: 1em;
     color: black;
@@ -45,26 +62,26 @@ input.poeta, textarea.poeta, button.poeta {
 }
 
 /* Elementos de classe "campo" de tag <label> */
-.campo.poeta{
+.campo{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.campo.poeta label {
+.label {
     color: var(--wt);
     text-shadow: var(--ls);
 }
 
 /* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
-.campo.poeta input[type="text"], .campo.poeta textarea {
+.name, .textarea {
     background-color: var(--back);
     border: 2px solid #000000;
     box-shadow: var(--sE);
 }
 
-form.poeta{
+.form{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -72,14 +89,14 @@ form.poeta{
     z-index: 2;
 }
 
-textarea.poeta{
+.textarea{
     min-width: 50vw;
-    height: 55vh;
+    height: 40vh;
     cursor: url('../../img/cursor.cur'), text
 }
 
 /* Elemento de classe "botao" */
-.botao.poeta {
+.botao {
     margin-top: 1.5em;
     font-size: 1.2em;
     background: black;
@@ -90,18 +107,18 @@ textarea.poeta{
 }
 
 /* Elemento de classe "botao" com o estado da pseudoclasse "hover" */
-.botao.poeta:hover {
+.botao:hover {
     background: #161616;
     box-shadow: inset var(--sE);
     text-shadow: none;
 }
 
 /* Elementos de classe botão e de tag <select> */
-.botao.poeta{
+.botao{
     cursor: pointer;
 }
 
-footer.poeta{
+.footer{
     width: 100vw;
     height: 50px;
     bottom: 0px;
@@ -109,7 +126,7 @@ footer.poeta{
     position: fixed;
 }
 @media (max-width: 370px){
-    #casal.poeta{
+    .casal{
         display: none;
     }
 }

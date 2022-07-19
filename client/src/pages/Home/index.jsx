@@ -1,14 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import TypeAnimation from 'react-type-animation'
 
-import './styles.css'
+import styles from './styles.module.css'
 
 import { ScrollButton } from '../../components/ButtonTop' 
 import { Card } from '../../components/Card'
 
-import luaImg from '../../img/pexels.jpg'
 import gitImg from '../../img/git_white.png'
-import topImg from '../../img/top_white.png'
+import { Direcionar } from '../../components/Direcionar'
 
 export function Home() {
     const autores = ['anonimo', "desconhecido","Yago","Ninguém", '5H4D0W']
@@ -30,20 +29,18 @@ export function Home() {
     }
 
   return (
-    <>
+    <div className={styles.body}>
     <ScrollButton/>
-    <header>
-        <a id="login">
-            <img src={luaImg} alt=""/>
-        </a>
-        <div id="title" className="title">
+    <header className={styles.header}>
+        <Direcionar to="/login" text="Clique aqui para escrever sua poesia"/>
+        <div id="title" className={styles.title}>
             <TypeAnimation
             cursor={true}
             sequence={[`"A poesia é uma forma de salvação. As canetas são minhas asas e as palavras libertação."`]}
             className="titulo"
             wraper='h2'
             />
-        </div>    
+        </div>
     </header>
     <main>
         <Card 
@@ -64,11 +61,11 @@ export function Home() {
         
 
     </main>
-    <footer> 
-        <address id="contato">
+    <footer className={styles.footer}> 
+        <address className={styles.address}>
             <p>Copyright &copy;</p>
-            <a href="https://github.com/Intern-Yago" className="slub github" target="_blank">
-                <img src={gitImg} alt="logo Github" className="logo git"/>
+            <a href="https://github.com/Intern-Yago" target="_blank">
+                <img src={gitImg} alt="logo Github"/>
                 Intern-Yago
             </a>
         </address>
@@ -80,6 +77,6 @@ export function Home() {
     <script src="/escrita.js"></script>
     */
     }
-    </>
+    </div>
   )
 }
