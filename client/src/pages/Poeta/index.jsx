@@ -6,7 +6,6 @@ import casal from '../../img/casal.png'
 import { Direcionar } from '../../components/Direcionar'
 
 export function Poeta() {
-  document.title="Poeta"
   return (
     <div className={styles.body_poeta}>
       <main className={styles.main}>
