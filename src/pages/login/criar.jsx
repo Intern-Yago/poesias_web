@@ -5,7 +5,7 @@ import { FiLock } from 'react-icons/fi';
 import Link from "next/link";
 import styles from '../../styles/Login.module.css';
 
-import Direcionar from "../../src/components/Direcionar";
+import Direcionar from "../../components/Direcionar";
 import stylesForm from '../../styles/CampoLogin.module.css';
 
 export default function Criar(){    
