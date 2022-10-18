@@ -1,0 +1,18 @@
+/*poesias*/
+.aspas_reverse{
+    transform: scaleX(-1) scaleY(-1);
+}
+.poesia{
+    padding: 10px 10px 10px 10px;
+    background-color: #a1a1a1;
+    margin: 15px 10px 0 10px;
+    text-shadow: var(--ts);
+    font-family: sans-serif;
+}
+.date{
+    margin-bottom: 10px;
+}
+.autoria{
+    font-style: italic;
+    text-align: right;
+}

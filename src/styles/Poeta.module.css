@@ -1,0 +1,148 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.container h1{
+    font-family: sans-serif;
+    color: var(--wt);
+    text-shadow: 0 0.5px 4px var(--bk);
+} 
+.container a{
+    background-color: transparent;
+    cursor: pointer;
+}
+.container a img{
+    width: 5em;
+}
+
+/* Elemento de tag <body> */
+.body_poeta{
+    height: 100vh;
+    min-width: 100vw;
+    background-color: #5B5B5B;
+    font-family: sans-serif;
+    font-size: 1em;
+    color: var(--wt);
+    text-shadow: var(--ls);
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.birds{
+    bottom: 48vh;
+    width: 25vw;
+    height: 35vh;
+    float: left;
+    position: absolute;
+    z-index: 1;
+    min-width: 178px;
+}
+.birds span{
+    min-height: 100%;
+    min-width: 100%;
+}
+.casal{
+    bottom: 5vh;
+    width: 171px;
+    height: 170px;
+    position: absolute;
+    right: 0vw;
+    z-index: 0;
+}
+.casal span{
+    min-width: 100%;
+    min-height: 100%;
+}
+.aside{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+/* Elementos de tags <input>, <textarea> e <button> */
+.nsme, .textarea, .botao {
+    font-family: sans-serif;
+    font-size: 1em;
+    color: black;
+    border-radius: 5px;
+}
+
+/* Elementos de classe "campo" de tag <label> */
+.campo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.label {
+    color: var(--wt);
+    text-shadow: var(--ls);
+}
+
+/* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
+.name, .textarea {
+    background-color: var(--back);
+    border: 2px solid #000000;
+    box-shadow: var(--sE);
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.textarea{
+    min-width: 50vw;
+    height: 40vh;
+    cursor: url('../../public/img/cursor.cur'), text;
+    resize: none;
+}
+
+/* Elemento de classe "botao" */
+.botao {
+    margin-top: 1.5em;
+    font-size: 1.2em;
+    background: black;
+    border: 0;
+    color: var(--wt);
+    box-shadow: var(--sE);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+/* Elemento de classe "botao" com o estado da pseudoclasse "hover" */
+.botao:hover {
+    background: #161616;
+    box-shadow: inset var(--sE);
+    text-shadow: none;
+}
+
+/* Elementos de classe botão e de tag <select> */
+.botao{
+    cursor: pointer;
+}
+
+.footer{
+    width: 100vw;
+    height: 50px;
+    bottom: 0px;
+    background-color: var(--bk);
+    position: fixed;
+}
+@media (max-width: 370px){
+    .casal{
+        display: none;
+    }
+    .birds{
+        display: none;
+    }
+}

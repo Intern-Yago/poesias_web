@@ -1,0 +1,38 @@
+/*Icones - other*/
+/*container*/
+.other{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    cursor: pointer;
+    user-select: none;
+
+    width: 50%;
+    font-size: 2em;
+    
+    margin-top: 15px;
+    margin-bottom: 0;
+}
+
+/*icones*/
+.logInOther{
+    transition: all 0.2s ease-in;
+}
+.logInOther:hover{
+    animation: giro .5s normal;
+}
+
+.line{
+    min-width: 100%;
+    border-bottom: 1px var(--B);
+}
+
+@keyframes giro{
+    from{
+        transform: rotate(0%);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
