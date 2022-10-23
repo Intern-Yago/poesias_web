@@ -13,6 +13,7 @@
 .container a{
     background-color: transparent;
     cursor: pointer;
+    text-decoration: none;
 }
 .container a img{
     width: 5em;
@@ -66,9 +67,8 @@
 }
 
 /* Elementos de tags <input>, <textarea> e <button> */
-.nsme, .textarea, .botao {
+.name, .textarea, .botao {
     font-family: sans-serif;
-    font-size: 1em;
     color: black;
     border-radius: 5px;
 }
@@ -88,11 +88,14 @@
 
 /* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
 .name, .textarea {
+    text-align: center;
     background-color: var(--back);
     border: 2px solid #000000;
     box-shadow: var(--sE);
 }
-
+.name{
+    font-size: 1em;
+}
 .form{
     display: flex;
     flex-direction: column;
@@ -102,10 +105,11 @@
 }
 
 .textarea{
-    min-width: 50vw;
+    font-size: 1.1em;
+    min-width: 40vw;
     height: 40vh;
-    cursor: url('../../public/img/cursor.cur'), text;
-    resize: none;
+    cursor: url('../../public/img/cursor.cur') 6 30, text;
+    resize: horizontal;
 }
 
 /* Elemento de classe "botao" */

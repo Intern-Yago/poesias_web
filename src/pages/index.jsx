@@ -7,9 +7,11 @@ import Card from '../components/Card'
 
 import TypingEffect from '../components/TypingEffect'
 import Footer from '../components/Footer'
+import Head from 'next/head'
 
 export default function Home({poesias}) {
   return (
+    <>
     <div className={styles.body}>
       <ScrollButton/>
       <header className={styles.header}>
@@ -18,7 +20,7 @@ export default function Home({poesias}) {
           <TypingEffect className={styles.titulo} text={"A poesia é uma forma de salvação. As canetas são minhas asas e as palavras libertação."}/>
         </div>
       </header>
-      <main className={styles.main}>
+      <main className={`${styles.main}`}>
         {
           poesias.map(poesia =>{
             return(
@@ -34,6 +36,7 @@ export default function Home({poesias}) {
       </main>
       <Footer/>
     </div>
+    </>
   )
 }
 

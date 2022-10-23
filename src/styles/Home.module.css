@@ -12,9 +12,11 @@
 }
 .header a{
   cursor: pointer;
+  text-decoration: none;
+  display: block;
 }
 .header #logo{
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 10px;
   margin-left: 15px;
   margin-right: 10px;
@@ -24,7 +26,7 @@
 .title{
   font-size: 1.7em;
   color: var(--mw);
-  width: 70%;
+  min-width: 70%;
   text-align: center;
   font-family: 'Marck Script', cursive;
 }

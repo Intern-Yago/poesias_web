@@ -16,7 +16,7 @@ model Poetrys{
   id String @id @default(uuid())
 
   autor String
-  mensagem String
+  mensagem String @db.LongText
 
   createdAt DateTime @default(now())
 }
