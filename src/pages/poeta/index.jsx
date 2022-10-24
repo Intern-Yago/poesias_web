@@ -23,7 +23,7 @@ export default function Poeta({poesias}) {
       window.location.href = "https://poesias-web.vercel.app/"
     })
     .catch(async function(err) {
-      console.log(err + " url: " + url);
+      console.log(err);
     })
   
   }
