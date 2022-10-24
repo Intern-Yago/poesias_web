@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next:start & prisma:studio",
+    "next:start":"next start",
     "lint": "next lint",
     "prisma:init": "prisma init",
     "prisma:migrate": "prisma migrate dev",
@@ -23,7 +24,8 @@
     "react-icons": "^4.4.0",
     "sharp": "^0.31.1",
     "typewriter-effect": "^2.19.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "nodemon":"^2.0.20"
   },
   "devDependencies": {
     "@types/react": "^18.0.21",
