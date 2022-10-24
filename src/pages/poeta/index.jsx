@@ -12,7 +12,7 @@ export default function Poeta({poesias}) {
   
   async function handleCreatePoesia(e){
     e.preventDefault()
-    await fetch('http://localhost:3000/api/poesias/create',{
+    await fetch('https://poesias-web.vercel.app/api/poesias/create',{
       method: 'POST',
       body: JSON.stringify({autor: newAutor, mensagem: newMensagem}),
       headers:{
@@ -20,7 +20,7 @@ export default function Poeta({poesias}) {
       }
 
     }).then(async () =>{
-      window.location.href = "http://localhost:3000/"
+      window.location.href = "https://poesias-web.vercel.app/"
     })
     .catch(async function(err) {
       console.log(err + " url: " + url);
