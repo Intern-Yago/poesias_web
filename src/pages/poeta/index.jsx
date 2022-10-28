@@ -12,7 +12,7 @@ export default function Poeta({poesias}) {
   
   async function handleCreatePoesia(e){
     e.preventDefault()
-    await fetch('https://poesias-web.vercel.app/api/poesias/create',{
+    await fetch('https://poesias-web-git-photos-intern-yago.vercel.app/api/poesias/create',{
       method: 'POST',
       body: JSON.stringify({autor: newAutor, mensagem: newMensagem}),
       headers:{
@@ -20,7 +20,7 @@ export default function Poeta({poesias}) {
       }
 
     }).then(async () =>{
-      window.location.href = "https://poesias-web.vercel.app/"
+      window.location.href = "https://poesias-web-git-photos-intern-yago.vercel.app/"
     })
     .catch(async function(err) {
       console.log(err);
