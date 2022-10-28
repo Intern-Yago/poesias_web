@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Direcionar from '../../components/Direcionar'
 import { useState } from 'react'
 import { prisma } from '../../lib/prisma'
+import Link from 'next/link'
 
 export default function Poeta({poesias}) {
   const [newAutor, setNewAutor] = useState('')
@@ -11,13 +12,20 @@ export default function Poeta({poesias}) {
   
   async function handleCreatePoesia(e){
     e.preventDefault()
-    await fetch('http://localhost:3000/api/poesias/create',{
+    await fetch('https://poesias-web-git-photos-intern-yago.vercel.app/api/poesias/create',{
       method: 'POST',
       body: JSON.stringify({autor: newAutor, mensagem: newMensagem}),
       headers:{
         'Content-Type':'application/json'
       }
+
+    }).then(async () =>{
+      window.location.href = "https://poesias-web-git-photos-intern-yago.vercel.app/"
     })
+    .catch(async function(err) {
+      console.log(err);
+    })
+  
   }
 
   return (
@@ -28,7 +36,7 @@ export default function Poeta({poesias}) {
           <h1>Seja Bem-Vindo</h1>
         </div>
         <br/>
-        <form className={styles.form} onSubmit={handleCreatePoesia}>
+        <form className={styles.form} onSubmit={handleCreatePoesia} method={"POST"}>
           <fieldset>
             <div className={styles.campo}>
               <label htmlFor="autor" className={styles.label}>
@@ -70,7 +78,7 @@ export default function Poeta({poesias}) {
     </div>
   )
 }
-export const getServerSideProps = async ()=>{
+export const getServerSideProps = async (ctx)=>{
   const poesias = await prisma.poetrys.findMany()
   const data = poesias.map(poesia =>{
     return{
