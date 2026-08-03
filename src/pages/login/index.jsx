@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getSession, signIn as signInNext } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -33,6 +33,16 @@ export default function Login() {
     const { register, handleSubmit } = useForm();
     const router = useRouter();
     const [infoMsg, setInfoMsg] = useState('');
+
+    useEffect(() => {
+        if (router.query.error) {
+            if (router.query.error === 'OAuthCallback' || router.query.error === 'Configuration') {
+                setInfoMsg('O login social requer chaves de API (GOOGLE_CLIENT_ID / GITHUB_ID) salvas na Vercel. Você também pode entrar digitando seu nome abaixo.');
+            } else {
+                setInfoMsg('Não foi possível concluir o login social. Tente utilizar o login direto abaixo.');
+            }
+        }
+    }, [router.query.error]);
 
     function handleFormLogin(data) {
         if (!data.email) {
