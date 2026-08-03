@@ -1,10 +1,10 @@
-import styles from '../../styles/Poeta.module.css'
-
-import Image from 'next/image'
-import Direcionar from '../../components/Direcionar'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession, getSession } from 'next-auth/react'
+import { FiArrowLeft, FiSend, FiFeather } from 'react-icons/fi'
+import styles from '../../styles/Poeta.module.css'
 
 export default function Poeta() {
   const { data: session } = useSession()
@@ -30,7 +30,7 @@ export default function Poeta() {
     setSuccessMsg('')
 
     if (!newAutor.trim()) {
-      setErrorMsg('Por favor, informe seu nome de autor.')
+      setErrorMsg('Por favor, informe seu nome ou pseudônimo.')
       return
     }
 
@@ -64,7 +64,7 @@ export default function Poeta() {
       
       setTimeout(() => {
         router.push('/')
-      }, 1500)
+      }, 1200)
     } catch (err) {
       setErrorMsg(err.message || 'Erro ao conectar com o servidor.')
     } finally {
@@ -74,50 +74,53 @@ export default function Poeta() {
 
   return (
     <div className={styles.body_poeta}>
+      {/* Navigation Top Bar */}
+      <nav className={styles.topNav}>
+        <Link href="/">
+          <a className={styles.btnBack}>
+            <FiArrowLeft /> Voltar para a Página Inicial
+          </a>
+        </Link>
+      </nav>
+
       <main className={styles.main}>
-        <div className={styles.container}>
-          <Direcionar to="/" text="Voltar para a página inicial" width='100' height='100'/>
-          <h1>Seja Bem-Vindo</h1>
+        <div className={styles.headerTitle}>
+          <FiFeather className={styles.featherIcon} />
+          <h1>Escreva sua Poesia</h1>
         </div>
-        <br/>
 
         {errorMsg && <div className={styles.errorBox}>{errorMsg}</div>}
         {successMsg && <div className={styles.successBox}>{successMsg}</div>}
 
-        <form className={styles.form} onSubmit={handleCreatePoesia}>
-          <fieldset>
-            <div className={styles.campo}>
-              <label htmlFor="autor" className={styles.label}>
-                <strong>
-                  Nome / Pseudônimo:
-                </strong>
-              </label>
-              <input 
-                type="text" 
-                name="autor" 
-                id="autor" 
-                required 
-                maxLength={100}
-                value={newAutor}
-                className={styles.name} 
-                autoFocus 
-                onChange={e => setNewAutor(e.target.value)}
-              />
-            </div>
-          </fieldset> 
+        <form className={styles.formCard} onSubmit={handleCreatePoesia}>
+          <div className={styles.inputGroup}>
+            <label htmlFor="autor" className={styles.label}>
+              Nome ou Pseudônimo:
+            </label>
+            <input 
+              type="text" 
+              name="autor" 
+              id="autor" 
+              required 
+              maxLength={100}
+              placeholder="Ex: Cecília Meireles"
+              value={newAutor}
+              className={styles.inputName} 
+              autoFocus 
+              onChange={e => setNewAutor(e.target.value)}
+            />
+          </div>
 
-          <div className={styles.campo}>
-            <br/>
+          <div className={styles.inputGroup}>
             <label htmlFor="poesia" className={styles.label}>
-              <strong>
-                Escreva seu poema:
-              </strong>
+              Seu Poema:
             </label>
             <textarea 
               id="poesia" 
               name="poesia" 
               required
               maxLength={3000}
+              placeholder="Escreva seus versos aqui..."
               value={newMensagem}
               className={styles.textarea} 
               onChange={e => setNewMensagem(e.target.value)}
@@ -127,18 +130,23 @@ export default function Poeta() {
             </div>
           </div>
 
-          <button className={styles.botao} type="submit" disabled={loading}>
-            {loading ? 'Publicando...' : 'Concluído'}
-          </button>            
+          <div className={styles.formActions}>
+            <Link href="/">
+              <a className={styles.btnCancel}>Cancelar</a>
+            </Link>
+            <button className={styles.btnSubmit} type="submit" disabled={loading}>
+              <FiSend /> {loading ? 'Publicando...' : 'Publicar Poesia'}
+            </button>            
+          </div>
         </form>
       </main>
 
       <aside className={`${styles.birds} ${styles.aside}`} >
-        <Image src="/img/birds.png" alt="pássaros" width='100' height='100'/>
+        <Image src="/img/birds.png" alt="pássaros" width='140' height='140'/>
       </aside>
 
       <aside className={`${styles.casal} ${styles.aside}`} >
-        <Image src="/img/casal.png" alt="casal" width='100' height='100'/>
+        <Image src="/img/casal.png" alt="casal" width='140' height='140'/>
       </aside>
 
       <footer className={styles.footer} > 

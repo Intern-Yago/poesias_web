@@ -14,16 +14,6 @@ import { parseCookies, setCookie } from "nookies";
 import Direcionar from "../../components/Direcionar";
 
 export const getServerSideProps = async (ctx) => {
-    const session = await getSession(ctx)
-    const { token } = parseCookies(ctx)
-    if (session || token) {
-        return {
-            redirect: {
-                destination: '/poeta',
-                permanent: false
-            }
-        }
-    }
     return {
         props: {}
     }
