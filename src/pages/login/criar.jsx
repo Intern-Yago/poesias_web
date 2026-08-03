@@ -1,85 +1,104 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiOutlineUser } from 'react-icons/ai';
-import { FiLock } from 'react-icons/fi';
-
+import { FiLock, FiArrowLeft, FiUserPlus } from 'react-icons/fi';
 import Link from "next/link";
-import styles from '../../styles/Login.module.css';
+import { useRouter } from "next/router";
+import { setCookie } from "nookies";
 
-import Direcionar from "../../components/Direcionar";
+import styles from '../../styles/Login.module.css';
 import stylesForm from '../../styles/CampoLogin.module.css';
 
-export default function Criar(){    
-    const {register, handleSubmit} = useForm()
-    
-    function handleSignIn(){
-        alert("Lamentamos informar que atualmente o site passa por reformas...\nPor favor conecte-se com contas sociais")
+export default function Criar() {    
+    const { register, handleSubmit } = useForm();
+    const router = useRouter();
+    const [infoMsg, setInfoMsg] = useState('');
+
+    function handleCreateAccount(data) {
+        if (!data.email) {
+            setInfoMsg('Por favor, informe seu email ou nome de usuário.');
+            return;
+        }
+
+        setCookie(undefined, 'token', `user_${Date.now()}`, {
+            maxAge: 60 * 60 * 24, // 24 hours
+            path: '/'
+        });
+
+        router.push('/poeta');
     }
 
-    return(
+    return (
         <div className={styles.body}>
             <div className={styles.pop_up}>
                 <div className={styles.fechar}>
-                    <Direcionar to="/" text="Voltar para a página inicial" width="100" height="100"/>
+                    <Link href="/">
+                        <a className={styles.btnVoltar}>
+                            <FiArrowLeft /> Voltar para o Início
+                        </a>
+                    </Link>
                 </div>
-                <form className={styles.form} onSubmit={handleSignIn}>
-                    <fieldset className="login grupo">
+
+                <div className={styles.loginHeader}>
+                    <h2>Criar Conta</h2>
+                    <p>Cadastre-se para começar a escrever suas poesias</p>
+                </div>
+
+                {infoMsg && <div className={styles.noticeBox}>{infoMsg}</div>}
+
+                <form className={stylesForm.form} onSubmit={handleSubmit(handleCreateAccount)}>
                     <div className={stylesForm.campo}>
-                        <label htmlFor="user">
-                            <strong>
-                                Uusário
-                            </strong>
+                        <label htmlFor="email">
+                            <strong>Usuário ou Email</strong>
                         </label>
                         <div className={stylesForm.inline}>
-                            <AiOutlineUser/>
+                            <AiOutlineUser />
                             <input 
-                                {...register('email')}
+                                {...register('email', { required: true })}
                                 type="text" 
                                 name="email"
                                 id="email" 
-                                placeholder="Email"
-                                maxLength="100" 
+                                placeholder="seu@email.com ou Nome"
+                                maxLength={100} 
                                 className={stylesForm.login} 
                                 autoComplete="email"
                             />
                         </div>
                     </div>
+
                     <div className={stylesForm.campo}>
                         <label htmlFor="password">
-                            <strong>
-                                Senha
-                            </strong>
+                            <strong>Senha</strong>
                         </label>
                         <div className={stylesForm.inline}>
-                            <FiLock/>
+                            <FiLock />
                             <input 
                                 {...register('password')}
                                 type="password" 
                                 name="password"
                                 id="password" 
-                                placeholder="********"
-                                maxLength="100" 
+                                placeholder="••••••••"
+                                maxLength={100} 
                                 className={stylesForm.login} 
                             />
                         </div>
                     </div>
-                    </fieldset>
+
                     <div className={styles.inline}>
-                    <a href="#" className={styles.a}>
-                        <button type="button" className={`${styles.botao} ${styles.logUp}`} onClick={handleSignIn}>
-                            Criar conta
+                        <button type="submit" className={`${styles.botao} ${styles.logUp}`}>
+                            <FiUserPlus /> Criar Conta
                         </button>      
-                    </a>
-                    <Link href="/login" className={styles.a}>
-                        <a style={{textDecoration: 'none'}}>
-                            <button type='button' className={`${styles.botao} ${styles.logIn}`}>
-                                Já tenho conta
-                            </button> 
-                        </a>
-                    </Link>
+
+                        <Link href="/login">
+                            <a style={{ textDecoration: 'none' }}>
+                                <button type="button" className={`${styles.botao} ${styles.logIn}`}>
+                                    Já Tenho Conta
+                                </button> 
+                            </a>
+                        </Link>
                     </div>
                 </form>
             </div>
-                
         </div>
     )
-}
+}
