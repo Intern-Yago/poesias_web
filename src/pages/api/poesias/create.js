@@ -7,6 +7,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: `Método ${req.method} não permitido` })
   }
 
+  if (!process.env.DATABASE_URL || process.env.DATABASE_URL.includes("YOUR_PASSWORD")) {
+    return res.status(400).json({
+      error: "O banco de dados ainda não foi conectado! Configure a variável DATABASE_URL no painel da Vercel ou no arquivo .env local com a senha do seu Supabase."
+    })
+  }
+
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     const legacyToken = req.cookies.token

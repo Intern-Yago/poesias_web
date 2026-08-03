@@ -2,29 +2,73 @@ import styles from '../../styles/Poeta.module.css'
 
 import Image from 'next/image'
 import Direcionar from '../../components/Direcionar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { getSession } from 'next-auth/react'
+import { useSession, getSession } from 'next-auth/react'
 
 export default function Poeta() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
   const [newAutor, setNewAutor] = useState('')
   const [newMensagem, setNewMensagem] = useState('')
-  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
+
+  useEffect(() => {
+    if (session?.user?.name) {
+      setNewAutor(session.user.name)
+    } else if (session?.user?.email) {
+      setNewAutor(session.user.email.split('@')[0])
+    }
+  }, [session])
   
   async function handleCreatePoesia(e){
     e.preventDefault()
-    if (!newAutor.trim() || !newMensagem.trim()) return
+    setErrorMsg('')
+    setSuccessMsg('')
 
-    const res = await fetch('/api/poesias/create',{
-      method: 'POST',
-      body: JSON.stringify({autor: newAutor, mensagem: newMensagem}),
-      headers:{
-        'Content-Type':'application/json'
+    if (!newAutor.trim()) {
+      setErrorMsg('Por favor, informe seu nome de autor.')
+      return
+    }
+
+    if (!newMensagem.trim()) {
+      setErrorMsg('Por favor, escreva o seu poema antes de enviar.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/poesias/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          autor: newAutor.trim(),
+          mensagem: newMensagem.trim()
+        })
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Erro ao publicar a poesia.')
       }
-    })
 
-    if (res.ok) {
-      router.push('/')
+      setSuccessMsg('Sua poesia foi publicada com sucesso!')
+      setNewMensagem('')
+      
+      setTimeout(() => {
+        router.push('/')
+      }, 1500)
+    } catch (err) {
+      setErrorMsg(err.message || 'Erro ao conectar com o servidor.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -36,19 +80,32 @@ export default function Poeta() {
           <h1>Seja Bem-Vindo</h1>
         </div>
         <br/>
+
+        {errorMsg && <div className={styles.errorBox}>{errorMsg}</div>}
+        {successMsg && <div className={styles.successBox}>{successMsg}</div>}
+
         <form className={styles.form} onSubmit={handleCreatePoesia}>
           <fieldset>
             <div className={styles.campo}>
               <label htmlFor="autor" className={styles.label}>
                 <strong>
-                  Nome
+                  Nome / Pseudônimo:
                 </strong>
               </label>
-              <input type="text" name="autor" id="autor" required className={styles.name} autoFocus onChange={e=>setNewAutor(e.target.value)}/>
+              <input 
+                type="text" 
+                name="autor" 
+                id="autor" 
+                required 
+                maxLength={100}
+                value={newAutor}
+                className={styles.name} 
+                autoFocus 
+                onChange={e => setNewAutor(e.target.value)}
+              />
             </div>
           </fieldset> 
 
-          {/*<!-- Caixa de texto -->*/}
           <div className={styles.campo}>
             <br/>
             <label htmlFor="poesia" className={styles.label}>
@@ -56,12 +113,23 @@ export default function Poeta() {
                 Escreva seu poema:
               </strong>
             </label>
-            <textarea id="experiencia" name="poesia" className={styles.textarea} onChange={e=>setNewMensagem(e.target.value)}></textarea>
+            <textarea 
+              id="poesia" 
+              name="poesia" 
+              required
+              maxLength={3000}
+              value={newMensagem}
+              className={styles.textarea} 
+              onChange={e => setNewMensagem(e.target.value)}
+            ></textarea>
+            <div className={styles.charCounter}>
+              {newMensagem.length} / 3000 caracteres
+            </div>
           </div>
 
-          {/*<!-- Botão para enviar o formulário -->*/}
-          <button className={styles.botao} type="submit">Concluído</button>            
-
+          <button className={styles.botao} type="submit" disabled={loading}>
+            {loading ? 'Publicando...' : 'Concluído'}
+          </button>            
         </form>
       </main>
 

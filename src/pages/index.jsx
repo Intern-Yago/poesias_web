@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Direcionar from '../components/Direcionar'
 import ScrollButton from '../components/ScrollButton'
 import styles from '../styles/Home.module.css'
@@ -8,7 +9,17 @@ import Card from '../components/Card'
 import TypingEffect from '../components/TypingEffect'
 import Footer from '../components/Footer'
 
-export default function Home({poesias}) {
+export default function Home({ poesias = [] }) {
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredPoesias = poesias.filter((poesia) => {
+    const term = searchTerm.toLowerCase()
+    return (
+      (poesia.autor && poesia.autor.toLowerCase().includes(term)) ||
+      (poesia.mensagem && poesia.mensagem.toLowerCase().includes(term))
+    )
+  })
+
   return (
     <div className={styles.body}>
       <ScrollButton/>
@@ -18,19 +29,33 @@ export default function Home({poesias}) {
           <TypingEffect className={styles.titulo} text={"A poesia é uma forma de salvação. As canetas são minhas asas e as palavras libertação."}/>
         </div>
       </header>
+
+      <div className={styles.searchContainer}>
+        <input 
+          type="text" 
+          placeholder="🔍 Pesquisar por autor ou trecho de poema..." 
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+        <span className={styles.poetryCount}>{filteredPoesias.length} poesias</span>
+      </div>
+
       <main className={styles.main}>
-        {
-          poesias.map(poesia =>{
-            return(
-              <Card 
-                key = {poesia.id}
-                date = {poesia.date}
-                mensagem={poesia.mensagem}
-                autor={poesia.autor}
-              />
-            )
-          })
-        }
+        {filteredPoesias.length === 0 ? (
+          <p className={styles.noResults}>
+            {searchTerm ? `Nenhuma poesia encontrada para "${searchTerm}".` : 'Nenhuma poesia publicada ainda. Seja o primeiro a escrever!'}
+          </p>
+        ) : (
+          filteredPoesias.map(poesia => (
+            <Card 
+              key={poesia.id}
+              date={poesia.date}
+              mensagem={poesia.mensagem}
+              autor={poesia.autor}
+            />
+          ))
+        )}
       </main>
       <Footer/>
     </div>

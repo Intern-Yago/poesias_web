@@ -1,18 +1,101 @@
-/*poesias*/
-.aspas_reverse{
-    transform: scaleX(-1) scaleY(-1);
+.cardContainer {
+  width: 100%;
+  max-width: 680px;
+  margin: 1.5rem auto;
 }
-.poesia{
-    padding: 10px 10px 10px 10px;
-    background-color: #a1a1a1;
-    margin: 15px 10px 0 10px;
-    text-shadow: var(--ts);
-    font-family: sans-serif;
+
+.poesia {
+  position: relative;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 210, 195, 0.8);
+  border-radius: 16px;
+  padding: 1.8rem 2.2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
 }
-.date{
-    margin-bottom: 10px;
+
+.poesia:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.09);
+  border-color: rgba(184, 134, 11, 0.4);
 }
-.autoria{
-    font-style: italic;
-    text-align: right;
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
 }
+
+.date {
+  font-size: 0.85rem;
+  color: #8c7a6b;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(245, 240, 235, 0.9);
+  border: 1px solid #e0d5c8;
+  color: #6b5847;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copyBtn:hover {
+  background: #6b5847;
+  color: #fff;
+  border-color: #6b5847;
+}
+
+.checkIcon {
+  color: #2e7d32;
+}
+
+.aspasContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.aspas_reverse {
+  transform: scaleX(-1) scaleY(-1);
+}
+
+.escrita {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #2c2520;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0.8rem 0 1.2rem 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px dashed rgba(200, 180, 160, 0.4);
+  padding-top: 0.8rem;
+}
+
+.autoria {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-weight: 600;
+  color: #5a4636;
+  font-size: 0.95rem;
+  margin: 0;
+}
