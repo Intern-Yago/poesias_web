@@ -1,23 +1,25 @@
 :root{
-  /*Var de cor*/
-  --ces:rgb(59, 59, 59);
-  --mw:#d7e1e6;
-  --ts:0 0.5px 4px white;
-  --sC: 0px 0.5px 4px #7f98a3;
-  --sE: 2px 2px 2px rgba(0,0,0,0.2);
-  --B: solid #5d5d5d;
-  --cB: #5d5d5d;
-  --wt: rgb(255, 255, 255);
-  --bk: rgb(0,0,0);
-  --back:#E0E0F8;
-  --back-color:rgba(0,0,0,0.5);
-  --letra:#ffffff;
-  --ls:0 0 10px rgb(0, 0, 0);
+  /*Var de cor - Light Poetic Theme*/
+  --ces: rgb(90, 75, 60);
+  --mw: #f8f4ef;
+  --ts: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --sC: 0px 2px 8px rgba(0,0,0,0.06);
+  --sE: 0 4px 12px rgba(0,0,0,0.08);
+  --B: solid #e0d5c8;
+  --cB: #faf8f5;
+  --wt: #ffffff;
+  --bk: #2c2520;
+  --back: #f4eee6;
+  --back-color: rgba(0, 0, 0, 0.6);
+  --letra: #2c2520;
+  --ls: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
-body{
+body {
   background-color: var(--cB);
+  color: var(--letra);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;

@@ -7,8 +7,7 @@
 }
 .container h1{
     font-family: sans-serif;
-    color: var(--wt);
-    text-shadow: 0 0.5px 4px var(--bk);
+    color: #2c2520;
 } 
 .container a{
     background-color: transparent;
@@ -20,13 +19,12 @@
 
 /* Elemento de tag <body> */
 .body_poeta{
-    height: 100vh;
+    min-height: 100vh;
     min-width: 100vw;
-    background-color: #5B5B5B;
+    background: linear-gradient(135deg, #faf8f5 0%, #f4eee6 100%);
     font-family: sans-serif;
     font-size: 1em;
-    color: var(--wt);
-    text-shadow: var(--ls);
+    color: #2c2520;
 }
 
 .main{
@@ -82,8 +80,7 @@
 }
 
 .label {
-    color: var(--wt);
-    text-shadow: var(--ls);
+    color: #2c2520;
 }
 
 /* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
