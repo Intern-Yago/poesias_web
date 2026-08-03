@@ -115,6 +115,15 @@ export default function Home({ poesias = [] }) {
 
 export const getServerSideProps = async () => {
   try {
+    if (!process.env.DATABASE_URL) {
+      console.warn("DATABASE_URL não configurada no ambiente.")
+      return {
+        props: {
+          poesias: []
+        }
+      }
+    }
+
     const poesias = await prisma.poetrys.findMany({
       orderBy: {
         createdAt: 'desc'
