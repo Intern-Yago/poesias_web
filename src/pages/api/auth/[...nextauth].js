@@ -4,19 +4,14 @@ import GoogleProvider from "next-auth/providers/google";
 
 const providers = [];
 
-if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
+const githubClientId = process.env.GITHUB_ID || process.env.GITHUB_CLIENT_ID;
+const githubClientSecret = process.env.GITHUB_SECRET || process.env.GITHUB_CLIENT_SECRET;
+
+if (githubClientId && githubClientSecret) {
   providers.push(
     GitHubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    })
-  );
-} else {
-  // Fallback GitHub provider to avoid crash if env not set yet
-  providers.push(
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID || "demo_github_id",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || "demo_github_secret",
+      clientId: githubClientId,
+      clientSecret: githubClientSecret,
     })
   );
 }
