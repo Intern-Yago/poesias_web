@@ -1,165 +1,96 @@
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useSession, getSession } from 'next-auth/react'
-import Link from 'next/link'
-import { FiArrowLeft, FiSend, FiFeather } from 'react-icons/fi'
 import styles from '../../styles/Poeta.module.css'
 
-export default function Poeta() {
-  const { data: session } = useSession()
+import Image from 'next/image'
+import Direcionar from '../../components/Direcionar'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { prisma } from '../../lib/prisma'
+
+export default function Poeta({poesias}) {
+  const [newAutor, setNewAutor] = useState('')
+  const [newMensagem, setNewMensagem] = useState('')
   const router = useRouter()
-
-  const [autor, setAutor] = useState('')
-  const [mensagem, setMensagem] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
-  const [successMsg, setSuccessMsg] = useState('')
-
-  useEffect(() => {
-    if (session?.user?.name) {
-      setAutor(session.user.name)
-    } else if (session?.user?.email) {
-      setAutor(session.user.email.split('@')[0])
-    }
-  }, [session])
-
-  async function handleCreatePoesia(e) {
+  
+  async function handleCreatePoesia(e){
     e.preventDefault()
-    setErrorMsg('')
-    setSuccessMsg('')
+    if (!newAutor.trim() || !newMensagem.trim()) return
 
-    if (!autor.trim()) {
-      setErrorMsg('Por favor, informe seu nome de autor.')
-      return
-    }
-
-    if (!mensagem.trim()) {
-      setErrorMsg('Por favor, escreva a sua poesia antes de enviar.')
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      const response = await fetch('/api/poesias/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          autor: autor.trim(),
-          mensagem: mensagem.trim()
-        })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erro ao publicar a poesia.')
+    const res = await fetch('/api/poesias/create',{
+      method: 'POST',
+      body: JSON.stringify({autor: newAutor, mensagem: newMensagem}),
+      headers:{
+        'Content-Type':'application/json'
       }
+    })
 
-      setSuccessMsg('Sua poesia foi publicada com sucesso!')
-      setMensagem('')
-      
-      setTimeout(() => {
-        router.push('/')
-      }, 1500)
-    } catch (err) {
-      setErrorMsg(err.message || 'Erro ao conectar com o servidor.')
-    } finally {
-      setLoading(false)
+    if (res.ok) {
+      router.push('/')
     }
   }
 
   return (
     <div className={styles.body_poeta}>
-      <header className={styles.topNav}>
-        <Link href="/">
-          <a className={styles.backBtn}>
-            <FiArrowLeft /> Voltar ao Início
-          </a>
-        </Link>
-      </header>
-
       <main className={styles.main}>
-        <div className={styles.cardBox}>
-          <div className={styles.titleGroup}>
-            <FiFeather className={styles.featherIcon} />
-            <h1>Inspire o Mundo</h1>
-            <p className={styles.subtitle}>Compartilhe sua versos, sentimentos e pensamentos</p>
-          </div>
-
-          {errorMsg && <div className={styles.errorBox}>{errorMsg}</div>}
-          {successMsg && <div className={styles.successBox}>{successMsg}</div>}
-
-          <form className={styles.form} onSubmit={handleCreatePoesia}>
+        <div className={styles.container}>
+          <Direcionar to="/" text="Voltar para a página inicial" width='100' height='100'/>
+          <h1>Seja Bem-Vindo</h1>
+        </div>
+        <br/>
+        <form className={styles.form} onSubmit={handleCreatePoesia}>
+          <fieldset>
             <div className={styles.campo}>
               <label htmlFor="autor" className={styles.label}>
-                Nome ou Pseudônimo:
+                <strong>
+                  Nome
+                </strong>
               </label>
-              <input
-                type="text"
-                name="autor"
-                id="autor"
-                required
-                maxLength={100}
-                placeholder="Como deseja ser assinado?"
-                value={autor}
-                className={styles.nameInput}
-                onChange={(e) => setAutor(e.target.value)}
-              />
+              <input type="text" name="autor" id="autor" required className={styles.name} autoFocus onChange={e=>setNewAutor(e.target.value)}/>
             </div>
+          </fieldset> 
 
-            <div className={styles.campo}>
-              <label htmlFor="poesia" className={styles.label}>
-                Sua Poesia:
-              </label>
-              <textarea
-                id="poesia"
-                name="poesia"
-                required
-                maxLength={3000}
-                placeholder="Escreva seus versos aqui..."
-                value={mensagem}
-                className={styles.textarea}
-                onChange={(e) => setMensagem(e.target.value)}
-              ></textarea>
-              <div className={styles.charCounter}>
-                {mensagem.length} / 3000 caracteres
-              </div>
-            </div>
+          {/*<!-- Caixa de texto -->*/}
+          <div className={styles.campo}>
+            <br/>
+            <label htmlFor="poesia" className={styles.label}>
+              <strong>
+                Escreva seu poema:
+              </strong>
+            </label>
+            <textarea id="experiencia" name="poesia" className={styles.textarea} onChange={e=>setNewMensagem(e.target.value)}></textarea>
+          </div>
 
-            <button className={styles.botao} type="submit" disabled={loading}>
-              {loading ? (
-                'Publicando...'
-              ) : (
-                <>
-                  <FiSend /> Publicar Poesia
-                </>
-              )}
-            </button>
-          </form>
-        </div>
+          {/*<!-- Botão para enviar o formulário -->*/}
+          <button className={styles.botao} type="submit">Concluído</button>            
+
+        </form>
       </main>
+
+      <aside className={`${styles.birds} ${styles.aside}`} >
+        <Image src="/img/birds.png" alt="pássaros" width='100' height='100'/>
+      </aside>
+
+      <aside className={`${styles.casal} ${styles.aside}`} >
+        <Image src="/img/casal.png" alt="casal" width='100' height='100'/>
+      </aside>
+
+      <footer className={styles.footer} > 
+      </footer>
     </div>
   )
 }
-
-export const getServerSideProps = async (ctx) => {
-  const session = await getSession(ctx)
-  const cookies = ctx.req.cookies
-
-  if (!session && !cookies.token) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false
-      }
+export const getServerSideProps = async ()=>{
+  const poesias = await prisma.poetrys.findMany()
+  const data = poesias.map(poesia =>{
+    return{
+      id: poesia.id,
+      autor: poesia.autor,
+      mensagem: poesia.mensagem,
+      date: poesia.createdAt.toISOString()
+    }
+  })
+  return{
+    props:{
+      poesias: data
     }
   }
-
-  return {
-    props: {}
-  }
 }
-

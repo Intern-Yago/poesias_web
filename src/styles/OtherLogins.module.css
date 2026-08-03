@@ -1,59 +1,38 @@
-.line {
-  margin: 1.5rem 0 1rem 0;
-  text-align: center;
-  position: relative;
+/*Icones - other*/
+/*container*/
+.other{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    cursor: pointer;
+    user-select: none;
+
+    width: 50%;
+    font-size: 2em;
+    
+    margin-top: 15px;
+    margin-bottom: 0;
 }
 
-.line::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  z-index: 1;
+/*icones*/
+.logInOther{
+    transition: all 0.2s ease-in;
+}
+.logInOther:hover{
+    animation: giro .5s normal;
 }
 
-.line span {
-  position: relative;
-  z-index: 2;
-  background: #231e1a;
-  padding: 0 0.8rem;
-  color: #8c7f73;
-  font-size: 0.8rem;
-  text-transform: lowercase;
+.line{
+    min-width: 100%;
+    border-bottom: 1px var(--B);
 }
 
-.other {
-  display: flex;
-  gap: 0.8rem;
-  width: 100%;
+@keyframes giro{
+    from{
+        transform: rotate(0%);
+    }
+    to{
+        transform: rotate(360deg);
+    }
 }
-
-.socialBtn {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  color: #e6ded6;
-  font-size: 0.88rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.socialBtn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border-color: rgba(212, 175, 55, 0.4);
-}
-
-.socialBtn svg {
-  font-size: 1.2rem;
-}

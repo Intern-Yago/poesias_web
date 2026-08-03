@@ -1,192 +1,148 @@
-.body_poeta {
-  min-height: 100vh;
-  width: 100%;
-  background: linear-gradient(135deg, #1e1b18 0%, #2a2420 50%, #171412 100%);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #f5f0eb;
-  padding: 1.5rem;
-  box-sizing: border-box;
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.container h1{
+    font-family: sans-serif;
+    color: var(--wt);
+    text-shadow: 0 0.5px 4px var(--bk);
+} 
+.container a{
+    background-color: transparent;
+    cursor: pointer;
+}
+.container a img{
+    width: 5em;
 }
 
-.topNav {
-  max-width: 800px;
-  margin: 0 auto 2rem auto;
+/* Elemento de tag <body> */
+.body_poeta{
+    height: 100vh;
+    min-width: 100vw;
+    background-color: #5B5B5B;
+    font-family: sans-serif;
+    font-size: 1em;
+    color: var(--wt);
+    text-shadow: var(--ls);
 }
 
-.backBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #d4af37;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  transition: all 0.2s ease;
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.birds{
+    bottom: 48vh;
+    width: 25vw;
+    height: 35vh;
+    float: left;
+    position: absolute;
+    z-index: 1;
+    min-width: 178px;
+}
+.birds span{
+    min-height: 100%;
+    min-width: 100%;
+}
+.casal{
+    bottom: 5vh;
+    width: 171px;
+    height: 170px;
+    position: absolute;
+    right: 0vw;
+    z-index: 0;
+}
+.casal span{
+    min-width: 100%;
+    min-height: 100%;
+}
+.aside{
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
-.backBtn:hover {
-  background: rgba(212, 175, 55, 0.25);
-  color: #fff;
+/* Elementos de tags <input>, <textarea> e <button> */
+.nsme, .textarea, .botao {
+    font-family: sans-serif;
+    font-size: 1em;
+    color: black;
+    border-radius: 5px;
 }
 
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.cardBox {
-  background: rgba(35, 30, 26, 0.75);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 20px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 720px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-}
-
-.titleGroup {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.featherIcon {
-  font-size: 2.5rem;
-  color: #d4af37;
-  margin-bottom: 0.5rem;
-}
-
-.titleGroup h1 {
-  font-family: 'Georgia', serif;
-  font-size: 2rem;
-  font-weight: 600;
-  color: #f8f4ef;
-  margin: 0 0 0.5rem 0;
-}
-
-.subtitle {
-  color: #b3a598;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-.errorBox {
-  background: rgba(220, 53, 69, 0.15);
-  border: 1px solid rgba(220, 53, 69, 0.4);
-  color: #ff6b6b;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.successBox {
-  background: rgba(40, 167, 69, 0.15);
-  border: 1px solid rgba(40, 167, 69, 0.4);
-  color: #51cf66;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+/* Elementos de classe "campo" de tag <label> */
+.campo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .label {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #e6ded6;
+    color: var(--wt);
+    text-shadow: var(--ls);
 }
 
-.nameInput {
-  background: rgba(20, 17, 15, 0.8);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
-  color: #fff;
-  font-size: 1rem;
-  outline: none;
-  transition: all 0.2s ease;
+/* Elementos de classe "campo" das tags <input> com atributo text, e da tag <textarea>*/
+.name, .textarea {
+    background-color: var(--back);
+    border: 2px solid #000000;
+    box-shadow: var(--sE);
 }
 
-.nameInput:focus {
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
 }
 
-.textarea {
-  background: rgba(20, 17, 15, 0.8);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 12px;
-  padding: 1rem;
-  color: #fff;
-  font-family: 'Georgia', serif;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  min-height: 220px;
-  resize: vertical;
-  outline: none;
-  transition: all 0.2s ease;
+.textarea{
+    min-width: 50vw;
+    height: 40vh;
+    cursor: url('../../public/img/cursor.cur'), text;
+    resize: none;
 }
 
-.textarea:focus {
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
-}
-
-.charCounter {
-  text-align: right;
-  font-size: 0.8rem;
-  color: #8c7f73;
-}
-
+/* Elemento de classe "botao" */
 .botao {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-  color: #1a1612;
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-  transition: all 0.25s ease;
+    margin-top: 1.5em;
+    font-size: 1.2em;
+    background: black;
+    border: 0;
+    color: var(--wt);
+    box-shadow: var(--sE);
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }
 
-.botao:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45);
+/* Elemento de classe "botao" com o estado da pseudoclasse "hover" */
+.botao:hover {
+    background: #161616;
+    box-shadow: inset var(--sE);
+    text-shadow: none;
 }
 
-.botao:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Elementos de classe botão e de tag <select> */
+.botao{
+    cursor: pointer;
 }
 
-@media (max-width: 600px) {
-  .cardBox {
-    padding: 1.5rem;
-  }
-}
+.footer{
+    width: 100vw;
+    height: 50px;
+    bottom: 0px;
+    background-color: var(--bk);
+    position: fixed;
+}
+@media (max-width: 370px){
+    .casal{
+        display: none;
+    }
+    .birds{
+        display: none;
+    }
+}

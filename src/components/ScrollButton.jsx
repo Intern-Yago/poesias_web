@@ -24,21 +24,12 @@ export default function ScrollButton(){
             in place of 'smooth' */
         });
     };
-    useEffect(() => {
+    useEffect(()=>{
         window.addEventListener('scroll', toggleVisible);
-        return () => window.removeEventListener('scroll', toggleVisible);
-    }, []);
-
-    if (!visible) return null;
+    },[])
 
     return (
-        <button 
-            onClick={scrollToTop} 
-            className={styles.Button} 
-            aria-label="Voltar ao topo"
-            title="Voltar ao topo"
-        >
-            <FaArrowCircleUp />
-        </button>
+        <FaArrowCircleUp onClick={scrollToTop}
+        style={{display: visible ? 'inline' : 'none'}} className={styles.Button}/>
     );
 }

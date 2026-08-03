@@ -1,111 +1,18 @@
-.cardContainer {
-  width: 100%;
-  max-width: 680px;
-  margin: 1.5rem auto;
-  perspective: 1000px;
+/*poesias*/
+.aspas_reverse{
+    transform: scaleX(-1) scaleY(-1);
 }
-
-.poesiaCard {
-  position: relative;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(230, 220, 205, 0.7);
-  border-radius: 16px;
-  padding: 2rem 2.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02);
-  transition: all 0.3s ease;
-  overflow: hidden;
+.poesia{
+    padding: 10px 10px 10px 10px;
+    background-color: #a1a1a1;
+    margin: 15px 10px 0 10px;
+    text-shadow: var(--ts);
+    font-family: sans-serif;
 }
-
-.poesiaCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
-  border-color: rgba(184, 134, 11, 0.4);
+.date{
+    margin-bottom: 10px;
 }
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+.autoria{
+    font-style: italic;
+    text-align: right;
 }
-
-.date {
-  font-size: 0.85rem;
-  color: #8c7a6b;
-  text-transform: capitalize;
-  letter-spacing: 0.5px;
-  font-weight: 500;
-}
-
-.copyBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: rgba(245, 240, 235, 0.8);
-  border: 1px solid #e0d5c8;
-  color: #6b5847;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.copyBtn:hover {
-  background: #6b5847;
-  color: #fff;
-  border-color: #6b5847;
-}
-
-.checkIcon {
-  color: #2e7d32;
-}
-
-.quoteDecoration {
-  line-height: 0;
-  height: 20px;
-}
-
-.quoteMark {
-  font-family: 'Georgia', serif;
-  font-size: 4rem;
-  color: rgba(184, 134, 11, 0.25);
-  display: block;
-  user-select: none;
-  margin-left: -0.5rem;
-}
-
-.escrita {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: #2c2520;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 1rem 0 1.5rem 0;
-}
-
-.cardFooter {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  border-top: 1px dashed rgba(200, 180, 160, 0.4);
-  padding-top: 1rem;
-}
-
-.authorBadge {
-  background: linear-gradient(135deg, rgba(245, 235, 220, 0.6), rgba(235, 225, 210, 0.6));
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  border: 1px solid rgba(210, 190, 170, 0.4);
-}
-
-.autoria {
-  font-family: 'Georgia', serif;
-  font-style: italic;
-  font-weight: 600;
-  color: #5a4636;
-  font-size: 0.95rem;
-  margin: 0;
-}
