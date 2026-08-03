@@ -104,7 +104,6 @@
 .textarea{
     min-width: 50vw;
     height: 40vh;
-    cursor: url('../../public/img/cursor.cur'), text;
     resize: none;
 }
 

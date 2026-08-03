@@ -4,9 +4,9 @@ import Image from 'next/image'
 import Direcionar from '../../components/Direcionar'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { prisma } from '../../lib/prisma'
+import { getSession } from 'next-auth/react'
 
-export default function Poeta({poesias}) {
+export default function Poeta() {
   const [newAutor, setNewAutor] = useState('')
   const [newMensagem, setNewMensagem] = useState('')
   const router = useRouter()
@@ -78,19 +78,24 @@ export default function Poeta({poesias}) {
     </div>
   )
 }
-export const getServerSideProps = async ()=>{
-  const poesias = await prisma.poetrys.findMany()
-  const data = poesias.map(poesia =>{
-    return{
-      id: poesia.id,
-      autor: poesia.autor,
-      mensagem: poesia.mensagem,
-      date: poesia.createdAt.toISOString()
+
+export const getServerSideProps = async (ctx) => {
+  try {
+    const session = await getSession(ctx)
+    const cookies = ctx.req.cookies || {}
+
+    if (!session && !cookies.token) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false
+        }
+      }
     }
-  })
-  return{
-    props:{
-      poesias: data
-    }
+  } catch (e) {}
+
+  return {
+    props: {}
   }
 }
+
