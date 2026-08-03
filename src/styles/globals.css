@@ -14,13 +14,14 @@
   --letra:#ffffff;
   --ls:0 0 10px rgb(0, 0, 0);
 }
-body{
+body {
   background-color: var(--cB);
 }
-*{
+*, html, body, button, input, textarea, a {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  cursor: url('/img/cursor.cur'), auto;
 }
 html {
   scroll-behavior: smooth;
