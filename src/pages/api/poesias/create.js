@@ -14,8 +14,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
-    const legacyToken = req.cookies.token
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" })
+    const legacyToken = req.cookies?.token || req.headers?.cookie
 
     if (!token && !legacyToken) {
       return res.status(401).json({ error: "Acesso não autorizado. Faça login para publicar." })
@@ -53,6 +53,6 @@ export default async function handler(req, res) {
     return res.status(201).json({ message: "Poesia publicada com sucesso!", poetry: newPoetry })
   } catch (error) {
     console.error("Erro ao salvar poesia:", error)
-    return res.status(500).json({ error: "Erro interno ao salvar a poesia. Tente novamente mais tarde." })
+    return res.status(500).json({ error: error.message || "Erro interno ao salvar a poesia. Tente novamente mais tarde." })
   }
 }

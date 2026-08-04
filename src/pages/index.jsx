@@ -14,10 +14,15 @@ import AccountModal from '../components/AccountModal'
 
 export default function Home({ poesias = [] }) {
   const { data: session } = useSession()
+  const [poesiasList, setPoesiasList] = useState(poesias)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeUser, setActiveUser] = useState(null)
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false)
   const [filterOnlyMyPosts, setFilterOnlyMyPosts] = useState(false)
+
+  useEffect(() => {
+    setPoesiasList(poesias)
+  }, [poesias])
 
   useEffect(() => {
     const cookies = parseCookies()
@@ -40,10 +45,10 @@ export default function Home({ poesias = [] }) {
   }, [session])
 
   const userPoesiasCount = activeUser
-    ? poesias.filter(p => p.autor?.toLowerCase() === activeUser.name?.toLowerCase()).length
+    ? poesiasList.filter(p => p.autor?.toLowerCase() === activeUser.name?.toLowerCase()).length
     : 0
 
-  const filteredPoesias = poesias.filter((poesia) => {
+  const filteredPoesias = poesiasList.filter((poesia) => {
     if (filterOnlyMyPosts && activeUser?.name) {
       if (poesia.autor?.toLowerCase() !== activeUser.name.toLowerCase()) {
         return false
@@ -55,6 +60,10 @@ export default function Home({ poesias = [] }) {
       (poesia.mensagem && poesia.mensagem.toLowerCase().includes(term))
     )
   })
+
+  function handleDeletePoesia(deletedId) {
+    setPoesiasList(prev => prev.filter(p => p.id !== deletedId))
+  }
 
   function handleLogout() {
     destroyCookie(undefined, 'token', { path: '/' })
@@ -204,9 +213,12 @@ export default function Home({ poesias = [] }) {
             {filteredPoesias.map((poesia) => (
               <Card
                 key={poesia.id}
+                id={poesia.id}
                 date={poesia.date}
                 mensagem={poesia.mensagem}
                 autor={poesia.autor}
+                currentUserName={activeUser?.name}
+                onDelete={handleDeletePoesia}
               />
             ))}
           </div>
