@@ -192,6 +192,7 @@ export default function Home({ poesias = [] }) {
           <div className={styles.emptyState}>
             <p>
               {filterOnlyMyPosts 
+                ? 'Você ainda não publicou nenhuma poesia.' 
                 : `Nenhuma poesia encontrada ${searchTerm ? `para "${searchTerm}"` : ''}.`}
             </p>
             <Link href="/poeta">
