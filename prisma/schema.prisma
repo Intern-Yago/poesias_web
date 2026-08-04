@@ -12,8 +12,20 @@ datasource db {
 }
 
 model Poetrys {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
+  titulo    String?
   autor     String
-  mensagem  String   @db.Text
+  mensagem  String    @db.Text
+  likes     Int       @default(0)
+  createdAt DateTime  @default(now())
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  poetryId  String
+  poetry    Poetrys  @relation(fields: [poetryId], references: [id], onDelete: Cascade)
+  autor     String
+  texto     String   @db.Text
   createdAt DateTime @default(now())
 }

@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useSession, signOut } from 'next-auth/react'
 import { parseCookies, destroyCookie } from 'nookies'
-import { FiEdit3, FiSearch, FiLogIn, FiLogOut, FiBookOpen, FiUser, FiSettings, FiGrid } from 'react-icons/fi'
+import { 
+  FiEdit3, FiSearch, FiLogIn, FiLogOut, FiBookOpen, FiUser, FiSettings, 
+  FiGrid, FiList, FiChevronLeft, FiChevronRight 
+} from 'react-icons/fi'
 import styles from '../styles/Home.module.css'
 
 import { prisma } from '../lib/prisma'
@@ -11,19 +15,37 @@ import ScrollButton from '../components/ScrollButton'
 import TypingEffect from '../components/TypingEffect'
 import Footer from '../components/Footer'
 import AccountModal from '../components/AccountModal'
+import PoemModal from '../components/PoemModal'
+import AuthRequiredModal from '../components/AuthRequiredModal'
 
 export default function Home({ poesias = [] }) {
+  const router = useRouter()
   const { data: session } = useSession()
+
   const [poesiasList, setPoesiasList] = useState(poesias)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeUser, setActiveUser] = useState(null)
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false)
   const [filterOnlyMyPosts, setFilterOnlyMyPosts] = useState(false)
 
+  // Layout view mode: 'grid' (3 por linha) or 'list' (1 por linha)
+  const [viewMode, setViewMode] = useState('grid')
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(6)
+
+  // Modal states
+  const [selectedPoetryModal, setSelectedPoetryModal] = useState(null)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+
+  const feedRef = useRef(null)
+
   useEffect(() => {
     setPoesiasList(poesias)
   }, [poesias])
 
+  // Active user session / cookies setup
   useEffect(() => {
     const cookies = parseCookies()
     let name = ''
@@ -44,6 +66,21 @@ export default function Home({ poesias = [] }) {
     }
   }, [session])
 
+  // Deep linking check for ?poesia=ID
+  useEffect(() => {
+    if (router.query?.poesia && poesiasList.length > 0) {
+      const found = poesiasList.find(p => p.id === router.query.poesia)
+      if (found) {
+        setSelectedPoetryModal(found)
+      }
+    }
+  }, [router.query, poesiasList])
+
+  // Reset page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, filterOnlyMyPosts])
+
   const userPoesiasCount = activeUser
     ? poesiasList.filter(p => p.autor?.toLowerCase() === activeUser.name?.toLowerCase()).length
     : 0
@@ -56,13 +93,31 @@ export default function Home({ poesias = [] }) {
     }
     const term = searchTerm.toLowerCase()
     return (
+      (poesia.titulo && poesia.titulo.toLowerCase().includes(term)) ||
       (poesia.autor && poesia.autor.toLowerCase().includes(term)) ||
       (poesia.mensagem && poesia.mensagem.toLowerCase().includes(term))
     )
   })
 
+  // Pagination calculation
+  const totalPages = Math.ceil(filteredPoesias.length / itemsPerPage) || 1
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const paginatedPoesias = filteredPoesias.slice(startIndex, startIndex + itemsPerPage)
+
+  function handlePageChange(newPage) {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage)
+      if (feedRef.current) {
+        feedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+  }
+
   function handleDeletePoesia(deletedId) {
     setPoesiasList(prev => prev.filter(p => p.id !== deletedId))
+    if (selectedPoetryModal?.id === deletedId) {
+      setSelectedPoetryModal(null)
+    }
   }
 
   function handleLogout() {
@@ -81,6 +136,10 @@ export default function Home({ poesias = [] }) {
     }
   }
 
+  function handleLoginSuccess(userInfo) {
+    setActiveUser(userInfo)
+  }
+
   return (
     <div className={styles.body}>
       <ScrollButton />
@@ -93,6 +152,23 @@ export default function Home({ poesias = [] }) {
         userEmail={activeUser?.email}
         userPoesiasCount={userPoesiasCount}
         onFilterMyPoesias={handleFilterMyPoesias}
+      />
+
+      {/* Full Poem View Modal */}
+      <PoemModal
+        isOpen={Boolean(selectedPoetryModal)}
+        onClose={() => setSelectedPoetryModal(null)}
+        poetry={selectedPoetryModal}
+        activeUser={activeUser}
+        onDelete={handleDeletePoesia}
+        onOpenAuthModal={() => setIsAuthModalOpen(true)}
+      />
+
+      {/* Login Required Modal (for commenting when logged out) */}
+      <AuthRequiredModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       {/* Top Navbar */}
@@ -160,7 +236,7 @@ export default function Home({ poesias = [] }) {
             <FiSearch className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="Pesquisar por autor ou trecho de poesia..."
+              placeholder="Pesquisar por título, autor ou trecho de poesia..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value)
@@ -173,9 +249,9 @@ export default function Home({ poesias = [] }) {
       </section>
 
       {/* Feed Container */}
-      <main className={styles.main}>
+      <main className={styles.main} ref={feedRef}>
         <div className={styles.feedHeader}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <h2>{filterOnlyMyPosts ? `Minhas Poesias (${activeUser?.name})` : 'Poemas Publicados'}</h2>
             {filterOnlyMyPosts && (
               <button
@@ -194,7 +270,28 @@ export default function Home({ poesias = [] }) {
               </button>
             )}
           </div>
-          <span className={styles.poetryCount}>{filteredPoesias.length} poesias</span>
+
+          <div className={styles.feedHeaderControls}>
+            {/* Disposition switcher (Grid 3 per row vs List 1 per row) */}
+            <div className={styles.viewToggleGroup}>
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`${styles.toggleBtn} ${viewMode === 'grid' ? styles.toggleBtnActive : ''}`}
+                title="Visualização em Grade (3 por linha)"
+              >
+                <FiGrid /> <span>Grade</span>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`${styles.toggleBtn} ${viewMode === 'list' ? styles.toggleBtnActive : ''}`}
+                title="Visualização em Lista (1 por linha)"
+              >
+                <FiList /> <span>Lista</span>
+              </button>
+            </div>
+
+            <span className={styles.poetryCount}>{filteredPoesias.length} poesias</span>
+          </div>
         </div>
 
         {filteredPoesias.length === 0 ? (
@@ -209,19 +306,92 @@ export default function Home({ poesias = [] }) {
             </Link>
           </div>
         ) : (
-          <div className={styles.cardFeed}>
-            {filteredPoesias.map((poesia) => (
-              <Card
-                key={poesia.id}
-                id={poesia.id}
-                date={poesia.date}
-                mensagem={poesia.mensagem}
-                autor={poesia.autor}
-                currentUserName={activeUser?.name}
-                onDelete={handleDeletePoesia}
-              />
-            ))}
-          </div>
+          <>
+            {/* Feed Cards (Grid or List layout) */}
+            <div className={viewMode === 'grid' ? styles.cardFeedGrid : styles.cardFeedList}>
+              {paginatedPoesias.map((poesia) => (
+                <Card
+                  key={poesia.id}
+                  id={poesia.id}
+                  titulo={poesia.titulo}
+                  date={poesia.date}
+                  mensagem={poesia.mensagem}
+                  autor={poesia.autor}
+                  likes={poesia.likes}
+                  currentUserName={activeUser?.name}
+                  onDelete={handleDeletePoesia}
+                  onOpenModal={(poetry) => setSelectedPoetryModal(poetry)}
+                  onOpenAuthModal={() => setIsAuthModalOpen(true)}
+                />
+              ))}
+            </div>
+
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className={styles.paginationContainer}>
+                <div className={styles.paginationButtons}>
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={styles.pageBtn}
+                    title="Página Anterior"
+                  >
+                    <FiChevronLeft /> Anterior
+                  </button>
+
+                  {Array.from({ length: totalPages }, (_, index) => {
+                    const pageNum = index + 1
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`${styles.pageBtn} ${currentPage === pageNum ? styles.pageBtnActive : ''}`}
+                      >
+                        {pageNum}
+                      </button>
+                    )
+                  })}
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={styles.pageBtn}
+                    title="Próxima Página"
+                  >
+                    Próxima <FiChevronRight />
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem', color: '#7a6a5c' }}>
+                  <span>Página <strong>{currentPage}</strong> de <strong>{totalPages}</strong></span>
+                  <span>•</span>
+                  <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    Exibir:
+                    <select
+                      value={itemsPerPage}
+                      onChange={(e) => {
+                        setItemsPerPage(Number(e.target.value))
+                        setCurrentPage(1)
+                      }}
+                      style={{
+                        padding: '0.2rem 0.5rem',
+                        borderRadius: '8px',
+                        border: '1px solid #dcd0c0',
+                        fontSize: '0.85rem',
+                        color: '#4a3b30',
+                        backgroundColor: '#fff'
+                      }}
+                    >
+                      <option value={6}>6 por página</option>
+                      <option value={9}>9 por página</option>
+                      <option value={12}>12 por página</option>
+                      <option value={18}>18 por página</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </main>
 
@@ -248,8 +418,10 @@ export const getServerSideProps = async () => {
 
     const data = poesias.map((poesia) => ({
       id: poesia.id,
+      titulo: poesia.titulo || null,
       autor: poesia.autor || 'Anônimo',
       mensagem: poesia.mensagem || '',
+      likes: poesia.likes || 0,
       date: poesia.createdAt ? poesia.createdAt.toISOString() : new Date().toISOString()
     }))
 
@@ -267,4 +439,3 @@ export const getServerSideProps = async () => {
     }
   }
 }
-

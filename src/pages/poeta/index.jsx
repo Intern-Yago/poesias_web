@@ -11,6 +11,7 @@ export default function Poeta() {
   const router = useRouter()
 
   const [newAutor, setNewAutor] = useState('')
+  const [newTitulo, setNewTitulo] = useState('')
   const [newMensagem, setNewMensagem] = useState('')
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
@@ -49,6 +50,7 @@ export default function Poeta() {
         },
         body: JSON.stringify({
           autor: newAutor.trim(),
+          titulo: newTitulo.trim(),
           mensagem: newMensagem.trim()
         })
       })
@@ -61,6 +63,7 @@ export default function Poeta() {
 
       setSuccessMsg('Sua poesia foi publicada com sucesso!')
       setNewMensagem('')
+      setNewTitulo('')
       
       setTimeout(() => {
         router.push('/')
@@ -108,6 +111,22 @@ export default function Poeta() {
               className={styles.inputName} 
               autoFocus 
               onChange={e => setNewAutor(e.target.value)}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="titulo" className={styles.label}>
+              Título da Poesia (Opcional):
+            </label>
+            <input 
+              type="text" 
+              name="titulo" 
+              id="titulo" 
+              maxLength={150}
+              placeholder="Ex: Amor é um fogo que arde sem se ver..."
+              value={newTitulo}
+              className={styles.inputName} 
+              onChange={e => setNewTitulo(e.target.value)}
             />
           </div>
 

@@ -192,10 +192,108 @@
   color: #7a6a5c;
 }
 
-.cardFeed {
+.feedHeaderControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.viewToggleGroup {
+  display: flex;
+  align-items: center;
+  background: rgba(230, 220, 205, 0.6);
+  border-radius: 20px;
+  padding: 0.2rem;
+  border: 1px solid #dcd0c0;
+}
+
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 16px;
+  border: none;
+  background: transparent;
+  color: #6b5c50;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggleBtnActive {
+  background: #ffffff;
+  color: #b8860b;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.cardFeedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.cardFeedList {
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.paginationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed #e2d5c3;
+}
+
+.paginationButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pageBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 0.6rem;
+  border-radius: 10px;
+  border: 1px solid #dcd0c0;
+  background: #ffffff;
+  color: #5c4b3e;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  border-color: #b8860b;
+  color: #b8860b;
+  background: #faf6ee;
+}
+
+.pageBtnActive {
+  background: #b8860b !important;
+  color: #ffffff !important;
+  border-color: #b8860b !important;
+  font-weight: 700;
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .emptyState {
@@ -210,6 +308,12 @@
   font-size: 1.1rem;
   color: #6b5c50;
   margin-bottom: 1.5rem;
+}
+
+@media (max-width: 992px) {
+  .cardFeedGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -229,6 +333,10 @@
     padding: 0.45rem 0.8rem;
     font-size: 0.82rem;
   }
+  .cardFeedGrid {
+    grid-template-columns: 1fr;
+  }
 }
+
 
 

@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "Acesso não autorizado. Faça login para publicar." })
     }
 
-    const { autor, mensagem } = req.body || {}
+    const { autor, mensagem, titulo } = req.body || {}
 
     // Input validation
     if (!autor || typeof autor !== 'string' || autor.trim().length === 0) {
@@ -42,12 +42,18 @@ export default async function handler(req, res) {
 
     const cleanAutor = autor.trim()
     const cleanMensagem = mensagem.trim()
+    const cleanTitulo = titulo && typeof titulo === 'string' && titulo.trim() ? titulo.trim().slice(0, 150) : null
+
+    const dataToSave = {
+      autor: cleanAutor,
+      mensagem: cleanMensagem
+    }
+    if (cleanTitulo) {
+      dataToSave.titulo = cleanTitulo
+    }
 
     const newPoetry = await prisma.poetrys.create({
-      data: {
-        autor: cleanAutor,
-        mensagem: cleanMensagem
-      }
+      data: dataToSave
     })
 
     return res.status(201).json({ message: "Poesia publicada com sucesso!", poetry: newPoetry })
