@@ -63,15 +63,20 @@ export default function Card({
 
   const handleLike = async (e) => {
     e.stopPropagation()
-    if (hasLiked) return
-    setHasLiked(true)
-    setLikeCount(prev => prev + 1)
+    const nextHasLiked = !hasLiked
+    setHasLiked(nextHasLiked)
+    setLikeCount(prev => nextHasLiked ? prev + 1 : Math.max(0, prev - 1))
     try {
-      await fetch('/api/poesias/like', {
+      const res = await fetch('/api/poesias/like', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
       })
+      if (res.ok) {
+        const data = await res.json()
+        setHasLiked(data.liked)
+        setLikeCount(data.likes)
+      }
     } catch (err) {
       console.error(err)
     }

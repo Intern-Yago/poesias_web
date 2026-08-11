@@ -18,6 +18,7 @@ import AccountModal from '../components/AccountModal'
 import PoemModal from '../components/PoemModal'
 import AuthRequiredModal from '../components/AuthRequiredModal'
 import ReportModal from '../components/ReportModal'
+import EditPoemModal from '../components/EditPoemModal'
 
 export default function Home({ poesias = [] }) {
   const router = useRouter()
@@ -39,6 +40,7 @@ export default function Home({ poesias = [] }) {
   // Modal states
   const [selectedPoetryModal, setSelectedPoetryModal] = useState(null)
   const [selectedReportPoetry, setSelectedReportPoetry] = useState(null)
+  const [editingPoetry, setEditingPoetry] = useState(null)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   const feedRef = useRef(null)
@@ -156,14 +158,15 @@ export default function Home({ poesias = [] }) {
     <div className={styles.body}>
       <ScrollButton />
 
-      {/* Account Settings Modal */}
+      {/* Account Settings / Profile Modal */}
       <AccountModal
         isOpen={isAccountModalOpen}
         onClose={() => setIsAccountModalOpen(false)}
         userName={activeUser?.name}
         userEmail={activeUser?.email}
-        userPoesiasCount={userPoesiasCount}
-        onFilterMyPoesias={handleFilterMyPoesias}
+        onOpenPoetryModal={(poetry) => setSelectedPoetryModal(poetry)}
+        onEditPoetry={(poetry) => setEditingPoetry(poetry)}
+        onDeletePoetry={handleDeletePoesia}
       />
 
       {/* Full Poem View Modal */}
@@ -173,8 +176,22 @@ export default function Home({ poesias = [] }) {
         poetry={selectedPoetryModal}
         activeUser={activeUser}
         onDelete={handleDeletePoesia}
+        onEditPoetry={(poetry) => setEditingPoetry(poetry)}
         onOpenReportModal={(poetry) => setSelectedReportPoetry(poetry)}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
+      />
+
+      {/* Edit Poem Modal */}
+      <EditPoemModal
+        isOpen={Boolean(editingPoetry)}
+        onClose={() => setEditingPoetry(null)}
+        poetry={editingPoetry}
+        onSaveSuccess={(updatedPoetry) => {
+          setPoesiasList(prev => prev.map(p => p.id === updatedPoetry.id ? { ...p, ...updatedPoetry } : p))
+          if (selectedPoetryModal?.id === updatedPoetry.id) {
+            setSelectedPoetryModal(updatedPoetry)
+          }
+        }}
       />
 
       {/* Report Modal */}

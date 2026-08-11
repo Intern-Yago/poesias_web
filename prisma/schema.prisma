@@ -21,6 +21,7 @@ model Poetrys {
   createdAt DateTime  @default(now())
   comments  Comment[]
   reports   Report[]
+  likesList Like[]
 }
 
 model Comment {
@@ -40,4 +41,14 @@ model Report {
   autor     String?
   status    String   @default("PENDENTE")
   createdAt DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  poetryId  String
+  poetry    Poetrys  @relation(fields: [poetryId], references: [id], onDelete: Cascade)
+  userKey   String
+  createdAt DateTime @default(now())
+
+  @@unique([poetryId, userKey])
 }

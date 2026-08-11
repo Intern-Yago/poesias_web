@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { 
   FiX, FiHeart, FiShare2, FiCopy, FiCheck, 
-  FiMessageSquare, FiSend, FiTrash2, FiCalendar, FiUser, FiAlertTriangle 
+  FiMessageSquare, FiSend, FiTrash2, FiCalendar, FiUser, FiAlertTriangle, FiEdit3 
 } from 'react-icons/fi'
 
 export default function PoemModal({
@@ -11,6 +11,7 @@ export default function PoemModal({
   poetry,
   activeUser,
   onDelete,
+  onEditPoetry,
   onOpenReportModal,
   onOpenAuthModal
 }) {
@@ -89,15 +90,20 @@ export default function PoemModal({
   }
 
   async function handleLike() {
-    if (hasLiked) return
-    setHasLiked(true)
-    setLikes(prev => prev + 1)
+    const nextHasLiked = !hasLiked
+    setHasLiked(nextHasLiked)
+    setLikes(prev => nextHasLiked ? prev + 1 : Math.max(0, prev - 1))
     try {
-      await fetch('/api/poesias/like', {
+      const res = await fetch('/api/poesias/like', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: poetry.id })
       })
+      if (res.ok) {
+        const data = await res.json()
+        setHasLiked(data.liked)
+        setLikes(data.likes)
+      }
     } catch (e) {
       console.error(e)
     }
@@ -416,25 +422,52 @@ export default function PoemModal({
             </div>
 
             {isAuthor && (
-              <button
-                onClick={handleDelete}
-                disabled={deleting}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  backgroundColor: '#fff5f5',
-                  border: '1px solid #feb2b2',
-                  color: '#c53030',
-                  padding: '0.45rem 0.9rem',
-                  borderRadius: '20px',
-                  fontWeight: 500,
-                  fontSize: '0.85rem',
-                  cursor: 'pointer'
-                }}
-              >
-                <FiTrash2 /> <span>{deleting ? 'Apagando...' : 'Excluir'}</span>
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                {onEditPoetry && (
+                  <button
+                    onClick={() => {
+                      onClose()
+                      onEditPoetry(poetry)
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      backgroundColor: '#fffdf5',
+                      border: '1px solid #d4af37',
+                      color: '#b8860b',
+                      padding: '0.45rem 0.9rem',
+                      borderRadius: '20px',
+                      fontWeight: 600,
+                      fontSize: '0.85rem',
+                      cursor: 'pointer'
+                    }}
+                    title="Editar minha poesia ou alterar privacidade"
+                  >
+                    <FiEdit3 /> <span>Editar</span>
+                  </button>
+                )}
+
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    backgroundColor: '#fff5f5',
+                    border: '1px solid #feb2b2',
+                    color: '#c53030',
+                    padding: '0.45rem 0.9rem',
+                    borderRadius: '20px',
+                    fontWeight: 500,
+                    fontSize: '0.85rem',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <FiTrash2 /> <span>{deleting ? 'Apagando...' : 'Excluir'}</span>
+                </button>
+              </div>
             )}
           </div>
 
