@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { 
   FiShield, FiFeather, FiMessageSquare, FiHeart, FiAlertTriangle, 
   FiTrash2, FiCheck, FiX, FiRefreshCw, FiSearch, FiArrowLeft, FiLock, FiEye 
@@ -9,6 +10,7 @@ import {
 
 export default function AdminDashboard() {
   const router = useRouter()
+  const { data: session, status: sessionStatus } = useSession()
   const [isAdmin, setIsAdmin] = useState(false)
   const [adminKeyInput, setAdminKeyInput] = useState('')
   const [authError, setAuthError] = useState('')
@@ -29,8 +31,10 @@ export default function AdminDashboard() {
   const [previewPoetry, setPreviewPoetry] = useState(null)
 
   useEffect(() => {
-    fetchAdminData()
-  }, [])
+    if (sessionStatus !== 'loading') {
+      fetchAdminData()
+    }
+  }, [sessionStatus])
 
   async function fetchAdminData(customKey = '') {
     setLoading(true)

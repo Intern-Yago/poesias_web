@@ -7,7 +7,7 @@ export async function checkIsAdmin(req) {
       secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" 
     })
 
-    const adminEmailsRaw = process.env.ADMIN_EMAILS || ""
+    const adminEmailsRaw = (process.env.ADMIN_EMAILS || "").replace(/^["']|["']$/g, '')
     const adminEmails = adminEmailsRaw
       .split(",")
       .map(e => e.trim().toLowerCase())
