@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "../../../lib/prisma";
 
 const providers = [];
@@ -22,6 +23,18 @@ if (process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID) {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_SECRET,
+    })
+  );
+}
+
+if (providers.length === 0) {
+  providers.push(
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {},
+      async authorize() {
+        return null;
+      }
     })
   );
 }

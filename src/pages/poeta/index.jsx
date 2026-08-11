@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useSession, getSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { FiArrowLeft, FiSend, FiFeather, FiLock } from 'react-icons/fi'
 import styles from '../../styles/Poeta.module.css'
 
@@ -210,12 +210,17 @@ export default function Poeta() {
   )
 }
 
+import { getToken } from 'next-auth/jwt'
+
 export const getServerSideProps = async (ctx) => {
   try {
-    const session = await getSession(ctx)
+    const token = await getToken({ 
+      req: ctx.req, 
+      secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" 
+    })
     const cookies = ctx.req.cookies || {}
 
-    if (!session && !cookies.token) {
+    if (!token && !cookies.token && !cookies.user_name) {
       return {
         redirect: {
           destination: '/login',
@@ -223,7 +228,9 @@ export const getServerSideProps = async (ctx) => {
         }
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error("Erro ao verificar token na pagina do poeta:", e)
+  }
 
   return {
     props: {}
