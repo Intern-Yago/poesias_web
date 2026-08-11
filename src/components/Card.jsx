@@ -49,7 +49,7 @@ export default function Card({
       if (!isNaN(d.getTime())) {
         dateFormatado = d.toLocaleDateString('pt-BR', {
           day: '2-digit',
-          month: 'long',
+          month: 'short',
           year: 'numeric'
         })
       } else if (typeof date === 'string') {
@@ -157,23 +157,21 @@ export default function Card({
             {/* Copy button */}
             <button 
               onClick={handleCopy} 
-              className={styles.actionBtn} 
-              title="Copiar poesia"
+              className={`${styles.iconActionBtn} ${copied ? styles.iconActionBtnSuccess : ''}`}
+              title={copied ? "Copiado!" : "Copiar poesia"}
               aria-label="Copiar poesia"
             >
-              {copied ? <FiCheck className={styles.checkIcon} /> : <FiCopy />}
-              <span>{copied ? 'Copiado!' : ''}</span>
+              {copied ? <FiCheck color="#10b981" /> : <FiCopy />}
             </button>
 
             {/* Share button */}
             <button
               onClick={handleShare}
-              className={styles.actionBtn}
-              title="Compartilhar poesia"
+              className={`${styles.iconActionBtn} ${shared ? styles.iconActionBtnSuccess : ''}`}
+              title={shared ? "Link copiado!" : "Compartilhar poesia"}
               aria-label="Compartilhar poesia"
             >
-              <FiShare2 />
-              <span>{shared ? 'Copiado!' : ''}</span>
+              {shared ? <FiCheck color="#10b981" /> : <FiShare2 />}
             </button>
 
             {/* Report button */}
@@ -183,7 +181,7 @@ export default function Card({
                   e.stopPropagation()
                   onOpenReportModal({ id, date, mensagem, autor, titulo, likes: likeCount })
                 }}
-                className={styles.actionBtn}
+                className={`${styles.iconActionBtn} ${styles.iconActionBtnReport}`}
                 title="Denunciar poesia"
                 aria-label="Denunciar poesia"
               >
@@ -196,12 +194,7 @@ export default function Card({
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className={styles.actionBtn}
-                style={{
-                  color: '#c53030',
-                  borderColor: '#feb2b2',
-                  backgroundColor: '#fff5f5'
-                }}
+                className={`${styles.iconActionBtn} ${styles.iconActionBtnDelete}`}
                 title="Excluir minha poesia"
                 aria-label="Excluir minha poesia"
               >
