@@ -19,6 +19,7 @@ model Poetrys {
   likes     Int       @default(0)
   createdAt DateTime  @default(now())
   comments  Comment[]
+  reports   Report[]
 }
 
 model Comment {
@@ -27,5 +28,15 @@ model Comment {
   poetry    Poetrys  @relation(fields: [poetryId], references: [id], onDelete: Cascade)
   autor     String
   texto     String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Report {
+  id        String   @id @default(uuid())
+  poetryId  String
+  poetry    Poetrys  @relation(fields: [poetryId], references: [id], onDelete: Cascade)
+  motivo    String   @db.Text
+  autor     String?
+  status    String   @default("PENDENTE")
   createdAt DateTime @default(now())
 }

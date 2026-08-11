@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react'
 import { parseCookies, destroyCookie } from 'nookies'
 import { 
   FiEdit3, FiSearch, FiLogIn, FiLogOut, FiBookOpen, FiUser, FiSettings, 
-  FiGrid, FiList, FiChevronLeft, FiChevronRight 
+  FiGrid, FiList, FiChevronLeft, FiChevronRight, FiShield 
 } from 'react-icons/fi'
 import styles from '../styles/Home.module.css'
 
@@ -17,6 +17,7 @@ import Footer from '../components/Footer'
 import AccountModal from '../components/AccountModal'
 import PoemModal from '../components/PoemModal'
 import AuthRequiredModal from '../components/AuthRequiredModal'
+import ReportModal from '../components/ReportModal'
 
 export default function Home({ poesias = [] }) {
   const router = useRouter()
@@ -37,6 +38,7 @@ export default function Home({ poesias = [] }) {
 
   // Modal states
   const [selectedPoetryModal, setSelectedPoetryModal] = useState(null)
+  const [selectedReportPoetry, setSelectedReportPoetry] = useState(null)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
 
   const feedRef = useRef(null)
@@ -161,7 +163,15 @@ export default function Home({ poesias = [] }) {
         poetry={selectedPoetryModal}
         activeUser={activeUser}
         onDelete={handleDeletePoesia}
+        onOpenReportModal={(poetry) => setSelectedReportPoetry(poetry)}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
+      />
+
+      {/* Report Modal */}
+      <ReportModal
+        isOpen={Boolean(selectedReportPoetry)}
+        onClose={() => setSelectedReportPoetry(null)}
+        poetry={selectedReportPoetry}
       />
 
       {/* Login Required Modal (for commenting when logged out) */}
@@ -185,6 +195,12 @@ export default function Home({ poesias = [] }) {
             <Link href="/poeta">
               <a className={styles.btnPublish}>
                 <FiEdit3 /> Escrever Poesia
+              </a>
+            </Link>
+
+            <Link href="/admin">
+              <a className={styles.btnAuth} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }} title="Painel de Administração">
+                <FiShield style={{ color: '#b8860b' }} /> Admin
               </a>
             </Link>
 
@@ -321,6 +337,7 @@ export default function Home({ poesias = [] }) {
                   currentUserName={activeUser?.name}
                   onDelete={handleDeletePoesia}
                   onOpenModal={(poetry) => setSelectedPoetryModal(poetry)}
+                  onOpenReportModal={(poetry) => setSelectedReportPoetry(poetry)}
                   onOpenAuthModal={() => setIsAuthModalOpen(true)}
                 />
               ))}

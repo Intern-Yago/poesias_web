@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { 
   FiX, FiHeart, FiShare2, FiCopy, FiCheck, 
-  FiMessageSquare, FiSend, FiTrash2, FiCalendar, FiUser 
+  FiMessageSquare, FiSend, FiTrash2, FiCalendar, FiUser, FiAlertTriangle 
 } from 'react-icons/fi'
 
 export default function PoemModal({
@@ -11,6 +11,7 @@ export default function PoemModal({
   poetry,
   activeUser,
   onDelete,
+  onOpenReportModal,
   onOpenAuthModal
 }) {
   const [likes, setLikes] = useState(poetry?.likes || 0)
@@ -387,6 +388,31 @@ export default function PoemModal({
                 {copied ? <FiCheck color="#2e7d32" /> : <FiCopy />}
                 <span>{copied ? 'Copiado!' : 'Copiar'}</span>
               </button>
+
+              {/* Report button */}
+              {onOpenReportModal && (
+                <button
+                  onClick={() => {
+                    onOpenReportModal(poetry)
+                  }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    backgroundColor: '#fff5f5',
+                    border: '1px solid #fed7d7',
+                    color: '#c53030',
+                    padding: '0.45rem 0.9rem',
+                    borderRadius: '20px',
+                    fontWeight: 500,
+                    fontSize: '0.88rem',
+                    cursor: 'pointer'
+                  }}
+                  title="Denunciar poesia"
+                >
+                  <FiAlertTriangle /> <span>Denunciar</span>
+                </button>
+              )}
             </div>
 
             {isAuthor && (

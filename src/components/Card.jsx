@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { FiCopy, FiCheck, FiTrash2, FiHeart, FiShare2, FiMessageSquare } from 'react-icons/fi'
+import { FiCopy, FiCheck, FiTrash2, FiHeart, FiShare2, FiMessageSquare, FiAlertTriangle } from 'react-icons/fi'
 import styles from '../styles/Card.module.css'
 
 export default function Card({ 
@@ -13,6 +13,7 @@ export default function Card({
   currentUserName, 
   onDelete, 
   onOpenModal,
+  onOpenReportModal,
   onOpenAuthModal 
 }) {
   const [copied, setCopied] = useState(false)
@@ -174,6 +175,21 @@ export default function Card({
               <FiShare2 />
               <span>{shared ? 'Copiado!' : ''}</span>
             </button>
+
+            {/* Report button */}
+            {onOpenReportModal && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onOpenReportModal({ id, date, mensagem, autor, titulo, likes: likeCount })
+                }}
+                className={styles.actionBtn}
+                title="Denunciar poesia"
+                aria-label="Denunciar poesia"
+              >
+                <FiAlertTriangle />
+              </button>
+            )}
 
             {/* Delete button (Author only) */}
             {isAuthor && (

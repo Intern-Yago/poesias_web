@@ -1,5 +1,6 @@
 import { prisma } from "../../../lib/prisma"
 import { getToken } from "next-auth/jwt"
+import { checkIsAdmin } from "../../../lib/admin"
 
 export default async function handler(req, res) {
   if (req.method !== 'DELETE' && req.method !== 'POST') {
@@ -10,8 +11,9 @@ export default async function handler(req, res) {
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" })
     const legacyToken = req.cookies?.token || req.headers?.cookie
+    const isAdmin = await checkIsAdmin(req)
 
-    if (!token && !legacyToken) {
+    if (!token && !legacyToken && !isAdmin) {
       return res.status(401).json({ error: "Acesso não autorizado. Faça login para excluir uma poesia." })
     }
 
@@ -33,13 +35,12 @@ export default async function handler(req, res) {
     // Determine current user name / email
     const currentUser = token?.name || token?.email?.split('@')[0] || req.cookies?.user_name || ''
 
-    // Permission check: allow author to delete (or if author matches case-insensitive)
+    // Permission check: allow author to delete (or if author matches case-insensitive) or if user is Admin
     const isAuthor = currentUser && poetry.autor && 
       (poetry.autor.trim().toLowerCase() === currentUser.trim().toLowerCase() ||
        poetry.autor.trim().toLowerCase() === token?.email?.toLowerCase())
 
-    // If currentUser is set, enforce ownership
-    if (!isAuthor && currentUser) {
+    if (!isAuthor && !isAdmin) {
       return res.status(403).json({ error: "Você só tem permissão para excluir as suas próprias poesias." })
     }
 
