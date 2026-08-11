@@ -31,6 +31,12 @@ export default async function handler(req, res) {
     if (!texto || typeof texto !== 'string' || texto.trim().length === 0) {
       return res.status(400).json({ error: "O comentário não pode ser vazio." })
     }
+    if (autor.trim().length > 100) {
+      return res.status(400).json({ error: "O nome do autor deve ter no máximo 100 caracteres." })
+    }
+    if (texto.trim().length > 1000) {
+      return res.status(400).json({ error: "O comentário deve ter no máximo 1000 caracteres." })
+    }
 
     try {
       const newComment = await prisma.comment.create({

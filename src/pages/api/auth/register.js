@@ -1,4 +1,10 @@
 import { prisma } from "../../../lib/prisma"
+import crypto from "crypto"
+
+function hashPassword(password) {
+  const salt = process.env.NEXTAUTH_SECRET || "poesias_salt_secure_2026"
+  return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -31,12 +37,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Este e-mail/usuário já possui uma conta cadastrada. Faça login." })
     }
 
-    // Create user
+    // Create user with hashed password
     const newUser = await prisma.user.create({
       data: {
         name: cleanName,
         email: cleanEmail,
-        password: password.trim(), // Stored securely
+        password: hashPassword(password.trim()),
         provider: 'credentials'
       }
     })

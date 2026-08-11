@@ -1,5 +1,11 @@
 import { prisma } from "../../../../lib/prisma"
 import { checkIsAdmin } from "../../../../lib/admin"
+import crypto from "crypto"
+
+function hashPassword(password) {
+  const salt = process.env.NEXTAUTH_SECRET || "poesias_salt_secure_2026"
+  return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
+}
 
 export default async function handler(req, res) {
   const isAdmin = await checkIsAdmin(req)
@@ -38,7 +44,7 @@ export default async function handler(req, res) {
 
       const updated = await prisma.user.update({
         where: { id: String(id) },
-        data: { password: tempPass }
+        data: { password: hashPassword(tempPass) }
       })
 
       return res.status(200).json({
