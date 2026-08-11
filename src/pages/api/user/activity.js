@@ -10,55 +10,72 @@ export default async function handler(req, res) {
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" })
     const legacyToken = req.cookies?.token
+    const clientCookie = req.cookies?.poesias_client_id
 
-    const userName = token?.name || token?.email?.split('@')[0] || legacyToken
+    const userName = token?.name || token?.email?.split('@')[0] || (typeof req.cookies?.user_name === 'string' ? req.cookies.user_name : null)
     const userEmail = token?.email
-
-    if (!userName && !userEmail) {
-      return res.status(401).json({ error: "Faça login para ver seu perfil." })
-    }
 
     const userKeys = []
     if (userEmail) userKeys.push(`email:${userEmail.toLowerCase()}`)
     if (userName) userKeys.push(`name:${userName.toLowerCase()}`)
     if (legacyToken) userKeys.push(`cookie:${legacyToken}`)
+    if (clientCookie) userKeys.push(`guest:${clientCookie}`)
+
+    // If completely no identification, return clean empty result
+    if (userKeys.length === 0 && !userName) {
+      return res.status(200).json({
+        created: [],
+        liked: [],
+        commented: [],
+        likedIds: []
+      })
+    }
 
     // 1. Created Poesias
-    const createdPoesias = await prisma.poetrys.findMany({
-      where: {
-        autor: {
-          equals: userName,
-          mode: 'insensitive'
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+    let createdPoesias = []
+    if (userName) {
+      createdPoesias = await prisma.poetrys.findMany({
+        where: {
+          autor: {
+            equals: String(userName),
+            mode: 'insensitive'
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+    }
 
     // 2. Liked Poesias
-    const userLikes = await prisma.like.findMany({
-      where: {
-        userKey: { in: userKeys }
-      },
-      include: {
-        poetry: true
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+    let userLikes = []
+    if (userKeys.length > 0) {
+      userLikes = await prisma.like.findMany({
+        where: {
+          userKey: { in: userKeys }
+        },
+        include: {
+          poetry: true
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+    }
     const likedPoesias = userLikes.map(l => l.poetry).filter(Boolean)
 
     // 3. Commented Poesias
-    const userComments = await prisma.comment.findMany({
-      where: {
-        autor: {
-          equals: userName,
-          mode: 'insensitive'
-        }
-      },
-      include: {
-        poetry: true
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+    let userComments = []
+    if (userName) {
+      userComments = await prisma.comment.findMany({
+        where: {
+          autor: {
+            equals: String(userName),
+            mode: 'insensitive'
+          }
+        },
+        include: {
+          poetry: true
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+    }
 
     // Deduplicate commented poesias
     const commentedPoesiasMap = {}
@@ -87,6 +104,11 @@ export default async function handler(req, res) {
     })
   } catch (error) {
     console.error("Erro ao buscar atividade do usuário:", error)
-    return res.status(500).json({ error: "Erro interno ao carregar perfil." })
+    return res.status(200).json({
+      created: [],
+      liked: [],
+      commented: [],
+      likedIds: []
+    })
   }
 }

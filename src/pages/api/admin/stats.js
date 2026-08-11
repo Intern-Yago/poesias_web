@@ -22,19 +22,25 @@ export default async function handler(req, res) {
         likes: true
       }
     })
-    const totalLikes = likesAggregate._sum.likes || 0
+    const totalLikes = likesAggregate._sum?.likes || 0
 
     const pendingReports = await prisma.report.count({
       where: { status: 'PENDENTE' }
     })
 
     const totalReports = await prisma.report.count()
-    const totalUsers = await prisma.user.count()
 
-    const usersList = await prisma.user.findMany({
-      take: 50,
-      orderBy: { createdAt: 'desc' }
-    })
+    let totalUsers = 0
+    let usersList = []
+    try {
+      totalUsers = await prisma.user.count()
+      usersList = await prisma.user.findMany({
+        take: 50,
+        orderBy: { createdAt: 'desc' }
+      })
+    } catch (uErr) {
+      console.warn("User table query warning:", uErr)
+    }
 
     const recentPoesias = await prisma.poetrys.findMany({
       take: 10,
