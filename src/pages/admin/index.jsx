@@ -301,16 +301,18 @@ export default function AdminDashboard() {
             </button>
           </form>
 
-          <Link href="/" passHref style={{
-            color: '#a0a0b0',
-            textDecoration: 'none',
-            fontSize: '0.85rem',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            marginTop: '0.5rem'
-          }}>
-            <FiArrowLeft /> Voltar para a página principal
+          <Link href="/">
+            <a style={{
+              color: '#a0a0b0',
+              textDecoration: 'none',
+              fontSize: '0.85rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              marginTop: '0.5rem'
+            }}>
+              <FiArrowLeft /> Voltar para a página principal
+            </a>
           </Link>
         </div>
       </div>
@@ -385,19 +387,21 @@ export default function AdminDashboard() {
             <FiRefreshCw /> Atualizar
           </button>
 
-          <Link href="/" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-            backgroundColor: '#b8860b',
-            color: '#fff',
-            padding: '0.5rem 1rem',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            fontSize: '0.85rem'
-          }}>
-            <FiArrowLeft /> Ver Site
+          <Link href="/">
+            <a style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              backgroundColor: '#b8860b',
+              color: '#fff',
+              padding: '0.5rem 1rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: 600,
+              fontSize: '0.85rem'
+            }}>
+              <FiArrowLeft /> Ver Site
+            </a>
           </Link>
         </div>
       </header>
