@@ -1,5 +1,6 @@
 import { prisma } from "../../../lib/prisma"
 import { getToken } from "next-auth/jwt"
+import { checkRateLimit } from "../../../lib/rateLimit"
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -14,6 +15,14 @@ export default async function handler(req, res) {
   }
 
   try {
+    const rateLimit = checkRateLimit(req, 'create_post', { limit: 10, windowMs: 10 * 60 * 1000 })
+    if (!rateLimit.success) {
+      const mins = Math.ceil(rateLimit.resetInSeconds / 60)
+      return res.status(429).json({
+        error: `Você atingiu o limite de publicações temporário. Por favor, aguarde ${mins} minuto(s) para publicar novamente.`
+      })
+    }
+
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET || "poesias_secret_key_2026_super_seguro" })
     const legacyToken = req.cookies?.token || req.headers?.cookie
 

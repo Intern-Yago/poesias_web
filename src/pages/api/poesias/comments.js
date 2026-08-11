@@ -1,4 +1,5 @@
 import { prisma } from "../../../lib/prisma"
+import { checkRateLimit } from "../../../lib/rateLimit"
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -20,6 +21,13 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
+    const rateLimit = checkRateLimit(req, 'create_comment', { limit: 15, windowMs: 5 * 60 * 1000 })
+    if (!rateLimit.success) {
+      return res.status(429).json({
+        error: "Você está comentando muito rápido! Aguarde um momento antes de enviar outro comentário."
+      })
+    }
+
     const { poetryId, autor, texto } = req.body || {}
 
     if (!poetryId) {
