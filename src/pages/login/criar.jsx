@@ -18,7 +18,7 @@ export default function Criar() {
     const [errorMsg, setErrorMsg] = useState('');
     const [loading, setLoading] = useState(false);
     
-    function handleFormSubmit(data) {
+    async function handleFormSubmit(data) {
         setErrorMsg('');
         setSuccessMsg('');
 
@@ -28,26 +28,46 @@ export default function Criar() {
         }
 
         setLoading(true);
-        const nameFromEmail = data.email.includes('@') ? data.email.split('@')[0] : data.email;
+        try {
+            const res = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data.password
+                })
+            });
 
-        setCookie(undefined, 'token', `user_${Date.now()}`, {
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/'
-        });
-        setCookie(undefined, 'user_name', nameFromEmail, {
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/'
-        });
-        setCookie(undefined, 'user_email', data.email, {
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/'
-        });
+            const resData = await res.json();
+            if (!res.ok) {
+                throw new Error(resData.error || 'Erro ao criar conta.');
+            }
 
-        setSuccessMsg(`🎉 Conta criada com sucesso! Seja bem-vindo(a), ${nameFromEmail}. Redirecionando...`);
+            const userName = resData.user?.name || data.email.split('@')[0];
 
-        setTimeout(() => {
-            router.push('/');
-        }, 1200);
+            setCookie(undefined, 'token', `user_${Date.now()}`, {
+                maxAge: 60 * 60 * 24 * 7,
+                path: '/'
+            });
+            setCookie(undefined, 'user_name', userName, {
+                maxAge: 60 * 60 * 24 * 7,
+                path: '/'
+            });
+            setCookie(undefined, 'user_email', data.email, {
+                maxAge: 60 * 60 * 24 * 7,
+                path: '/'
+            });
+
+            setSuccessMsg(`🎉 Conta criada com sucesso! Seja bem-vindo(a), ${userName}. Redirecionando...`);
+
+            setTimeout(() => {
+                router.push('/');
+            }, 1200);
+        } catch (err) {
+            setErrorMsg(err.message || 'Erro ao comunicar com o servidor.');
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

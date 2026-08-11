@@ -49,7 +49,9 @@ export default function Home({ poesias = [] }) {
     setPoesiasList(poesias)
   }, [poesias])
 
-  // Active user session / cookies setup
+  const [userLikedIds, setUserLikedIds] = useState([])
+
+  // Active user session / cookies setup & liked IDs fetch
   useEffect(() => {
     const cookies = parseCookies()
     let name = ''
@@ -68,6 +70,16 @@ export default function Home({ poesias = [] }) {
     } else {
       setActiveUser(null)
     }
+
+    // Fetch liked poetry IDs for current user to mark hearts permanently
+    fetch('/api/user/activity')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data?.likedIds) {
+          setUserLikedIds(data.likedIds)
+        }
+      })
+      .catch(() => {})
   }, [session])
 
   // Deep linking check for ?poesia=ID
@@ -362,6 +374,7 @@ export default function Home({ poesias = [] }) {
                   autor={poesia.autor}
                   likes={poesia.likes}
                   isPrivate={poesia.isPrivate}
+                  hasLiked={userLikedIds.includes(poesia.id)}
                   currentUserName={activeUser?.name}
                   onDelete={handleDeletePoesia}
                   onOpenModal={(poetry) => setSelectedPoetryModal(poetry)}

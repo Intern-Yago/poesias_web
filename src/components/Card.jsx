@@ -11,6 +11,7 @@ export default function Card({
   titulo, 
   likes = 0, 
   isPrivate = false,
+  hasLiked: initialHasLiked = false,
   currentUserName, 
   onDelete, 
   onOpenModal,
@@ -21,7 +22,11 @@ export default function Card({
   const [shared, setShared] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [likeCount, setLikeCount] = useState(likes || 0)
-  const [hasLiked, setHasLiked] = useState(false)
+  const [hasLiked, setHasLiked] = useState(initialHasLiked)
+
+  useEffect(() => {
+    setHasLiked(initialHasLiked)
+  }, [initialHasLiked])
 
   const autorSeguro = autor && typeof autor === 'string' && autor.trim().length > 0
     ? autor.trim().charAt(0).toUpperCase() + autor.trim().slice(1)

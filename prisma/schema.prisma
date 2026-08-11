@@ -51,4 +51,13 @@ model Like {
   createdAt DateTime @default(now())
 
   @@unique([poetryId, userKey])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String?
+  provider  String   @default("credentials")
+  createdAt DateTime @default(now())
 }

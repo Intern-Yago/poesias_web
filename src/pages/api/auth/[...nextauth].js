@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "../../../lib/prisma";
 
 const providers = [];
 
@@ -32,4 +33,27 @@ export default NextAuth({
     signIn: '/login',
     error: '/login',
   },
+  callbacks: {
+    async signIn({ user, account }) {
+      if (user?.email) {
+        try {
+          await prisma.user.upsert({
+            where: { email: user.email.toLowerCase() },
+            update: {
+              name: user.name || user.email.split('@')[0],
+              provider: account?.provider || 'oauth'
+            },
+            create: {
+              name: user.name || user.email.split('@')[0],
+              email: user.email.toLowerCase(),
+              provider: account?.provider || 'oauth'
+            }
+          });
+        } catch (e) {
+          console.error("Erro ao sincronizar usuário no BD:", e);
+        }
+      }
+      return true;
+    }
+  }
 });

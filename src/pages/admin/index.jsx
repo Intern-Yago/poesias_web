@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 import { 
   FiShield, FiFeather, FiMessageSquare, FiHeart, FiAlertTriangle, 
-  FiTrash2, FiCheck, FiX, FiRefreshCw, FiSearch, FiArrowLeft, FiLock, FiEye 
+  FiTrash2, FiCheck, FiX, FiRefreshCw, FiSearch, FiArrowLeft, FiLock, FiEye, FiUser 
 } from 'react-icons/fi'
 
 export default function AdminDashboard() {
@@ -21,6 +21,7 @@ export default function AdminDashboard() {
   const [reports, setReports] = useState([])
   const [poesias, setPoesias] = useState([])
   const [comments, setComments] = useState([])
+  const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
 
   // Filters
@@ -66,6 +67,7 @@ export default function AdminDashboard() {
       }
       setStats(statsData.stats)
       setComments(statsData.recentComments || [])
+      setUsers(statsData.usersList || [])
 
       // 2. Fetch Reports
       const reportsRes = await fetch('/api/poesias/report', { headers })
@@ -75,8 +77,7 @@ export default function AdminDashboard() {
       }
 
       // 3. Fetch Poesias for management list
-      const poesiasRes = await fetch('/api/admin/stats', { headers }) // initial overview
-      if (poesiasData => statsData.recentPoesias) {
+      if (statsData.recentPoesias) {
         setPoesias(statsData.recentPoesias || [])
       }
     } catch (err) {
@@ -84,6 +85,44 @@ export default function AdminDashboard() {
       setAuthError(err.message || 'Erro ao carregar dados do painel.')
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function handleResetPassword(userId) {
+    if (!window.confirm("Deseja resetar a senha deste usuário?")) return
+    try {
+      const res = await fetch('/api/admin/users/action', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: userId })
+      })
+      const data = await res.json()
+      if (res.ok) {
+        alert(`🔑 Senha temporária gerada com sucesso!\n\nUsuário: ${data.user.email}\nNova Senha: ${data.newPassword}`)
+        fetchAdminData()
+      } else {
+        alert(data.error || 'Erro ao resetar senha.')
+      }
+    } catch (err) {
+      alert('Erro de conexão com o servidor.')
+    }
+  }
+
+  async function handleDeleteUser(userId) {
+    if (!window.confirm("Tem certeza que deseja excluir esta conta de usuário?")) return
+    try {
+      const res = await fetch('/api/admin/users/action', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: userId })
+      })
+      if (res.ok) {
+        setActionSuccess('Usuário excluído com sucesso!')
+        setUsers(prev => prev.filter(u => u.id !== userId))
+        setTimeout(() => setActionSuccess(''), 3000)
+      }
+    } catch (err) {
+      alert('Erro de conexão com o servidor.')
     }
   }
 
@@ -628,6 +667,26 @@ export default function AdminDashboard() {
           >
             <FiMessageSquare /> Gerenciar Comentários
           </button>
+
+          <button
+            onClick={() => setActiveTab('users')}
+            style={{
+              padding: '0.65rem 1.25rem',
+              borderRadius: '10px',
+              border: 'none',
+              backgroundColor: activeTab === 'users' ? '#b8860b' : 'transparent',
+              color: activeTab === 'users' ? '#ffffff' : '#a0a0b0',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            <FiUser /> Usuários & Suporte ({users.length})
+          </button>
         </div>
 
         {/* Tab 1: Denúncias */}
@@ -906,6 +965,91 @@ export default function AdminDashboard() {
                 </tbody>
               </table>
             </div>
+          </div>
+        )}
+
+        {/* Tab 4: Usuários & Suporte */}
+        {activeTab === 'users' && (
+          <div style={{ backgroundColor: '#16161e', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)', padding: '1.5rem' }}>
+            <h3 style={{ margin: '0 0 1.2rem 0', color: '#fff', fontSize: '1.2rem', fontFamily: 'Georgia, serif' }}>
+              👥 Usuários Cadastrados & Suporte ({users.length})
+            </h3>
+            {users.length === 0 ? (
+              <p style={{ color: '#a0a0b0' }}>Nenhum usuário cadastrado no banco de dados ainda.</p>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', color: '#e0e0e0', fontSize: '0.9rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'left', backgroundColor: 'rgba(255,255,255,0.02)' }}>
+                      <th style={{ padding: '0.85rem 1rem', color: '#a0a0b0' }}>Nome / Pseudônimo</th>
+                      <th style={{ padding: '0.85rem 1rem', color: '#a0a0b0' }}>E-mail / Usuário</th>
+                      <th style={{ padding: '0.85rem 1rem', color: '#a0a0b0' }}>Login</th>
+                      <th style={{ padding: '0.85rem 1rem', color: '#a0a0b0' }}>Data de Cadastro</th>
+                      <th style={{ padding: '0.85rem 1rem', textAlign: 'right', color: '#a0a0b0' }}>Ações de Suporte</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map(u => (
+                      <tr key={u.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <td style={{ padding: '0.85rem 1rem', fontWeight: 600, color: '#fff' }}>{u.name}</td>
+                        <td style={{ padding: '0.85rem 1rem', color: '#b8860b' }}>{u.email}</td>
+                        <td style={{ padding: '0.85rem 1rem' }}>
+                          <span style={{
+                            padding: '0.2rem 0.6rem',
+                            borderRadius: '12px',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            backgroundColor: u.provider === 'google' ? 'rgba(234, 67, 53, 0.2)' : 'rgba(184, 134, 11, 0.2)',
+                            color: u.provider === 'google' ? '#ea4335' : '#b8860b'
+                          }}>
+                            {u.provider}
+                          </span>
+                        </td>
+                        <td style={{ padding: '0.85rem 1rem', color: '#a0a0b0' }}>
+                          {new Date(u.createdAt).toLocaleDateString('pt-BR')}
+                        </td>
+                        <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
+                            <button
+                              onClick={() => handleResetPassword(u.id)}
+                              style={{
+                                padding: '0.35rem 0.75rem',
+                                borderRadius: '8px',
+                                border: '1px solid #d4af37',
+                                backgroundColor: 'rgba(184, 134, 11, 0.15)',
+                                color: '#d4af37',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                              title="Resetar senha para fornecer suporte"
+                            >
+                              🔑 Resetar Senha
+                            </button>
+                            <button
+                              onClick={() => handleDeleteUser(u.id)}
+                              style={{
+                                padding: '0.35rem 0.65rem',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(239,68,68,0.4)',
+                                backgroundColor: 'rgba(239,68,68,0.15)',
+                                color: '#ef4444',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                cursor: 'pointer'
+                              }}
+                              title="Excluir conta de usuário"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </main>

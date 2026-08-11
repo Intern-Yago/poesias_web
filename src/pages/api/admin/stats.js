@@ -29,6 +29,12 @@ export default async function handler(req, res) {
     })
 
     const totalReports = await prisma.report.count()
+    const totalUsers = await prisma.user.count()
+
+    const usersList = await prisma.user.findMany({
+      take: 50,
+      orderBy: { createdAt: 'desc' }
+    })
 
     const recentPoesias = await prisma.poetrys.findMany({
       take: 10,
@@ -56,10 +62,12 @@ export default async function handler(req, res) {
         totalComments,
         totalLikes,
         pendingReports,
-        totalReports
+        totalReports,
+        totalUsers
       },
       recentPoesias,
-      recentComments
+      recentComments,
+      usersList
     })
   } catch (error) {
     console.error("Erro ao buscar estatísticas do admin:", error)
