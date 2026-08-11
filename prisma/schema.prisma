@@ -17,6 +17,7 @@ model Poetrys {
   autor     String
   mensagem  String    @db.Text
   likes     Int       @default(0)
+  isPrivate Boolean   @default(false)
   createdAt DateTime  @default(now())
   comments  Comment[]
   reports   Report[]

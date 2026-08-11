@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "Acesso não autorizado. Faça login para publicar." })
     }
 
-    const { autor, mensagem, titulo } = req.body || {}
+    const { autor, mensagem, titulo, isPrivate } = req.body || {}
 
     // Input validation
     if (!autor || typeof autor !== 'string' || autor.trim().length === 0) {
@@ -46,7 +46,8 @@ export default async function handler(req, res) {
 
     const dataToSave = {
       autor: cleanAutor,
-      mensagem: cleanMensagem
+      mensagem: cleanMensagem,
+      isPrivate: Boolean(isPrivate)
     }
     if (cleanTitulo) {
       dataToSave.titulo = cleanTitulo

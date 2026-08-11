@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useSession, getSession } from 'next-auth/react'
-import { FiArrowLeft, FiSend, FiFeather } from 'react-icons/fi'
+import { FiArrowLeft, FiSend, FiFeather, FiLock } from 'react-icons/fi'
 import styles from '../../styles/Poeta.module.css'
 
 export default function Poeta() {
@@ -13,6 +13,7 @@ export default function Poeta() {
   const [newAutor, setNewAutor] = useState('')
   const [newTitulo, setNewTitulo] = useState('')
   const [newMensagem, setNewMensagem] = useState('')
+  const [isPrivate, setIsPrivate] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
@@ -51,7 +52,8 @@ export default function Poeta() {
         body: JSON.stringify({
           autor: newAutor.trim(),
           titulo: newTitulo.trim(),
-          mensagem: newMensagem.trim()
+          mensagem: newMensagem.trim(),
+          isPrivate
         })
       })
 
@@ -146,6 +148,40 @@ export default function Poeta() {
             ></textarea>
             <div className={styles.charCounter}>
               {newMensagem.length} / 3000 caracteres
+            </div>
+          </div>
+
+          {/* Private / Unlisted toggle */}
+          <div 
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '0.75rem',
+              padding: '1rem 1.25rem',
+              borderRadius: '14px',
+              backgroundColor: isPrivate ? 'rgba(184, 134, 11, 0.08)' : 'rgba(0, 0, 0, 0.02)',
+              border: isPrivate ? '1px solid rgba(184, 134, 11, 0.35)' : '1px solid rgba(0, 0, 0, 0.08)',
+              marginBottom: '1.5rem',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease'
+            }}
+            onClick={() => setIsPrivate(!isPrivate)}
+          >
+            <input
+              type="checkbox"
+              id="isPrivate"
+              checked={isPrivate}
+              onChange={(e) => setIsPrivate(e.target.checked)}
+              onClick={(e) => e.stopPropagation()}
+              style={{ marginTop: '0.2rem', accentColor: '#b8860b', width: '18px', height: '18px', cursor: 'pointer' }}
+            />
+            <div>
+              <label htmlFor="isPrivate" style={{ fontWeight: 600, fontSize: '0.95rem', color: '#4a3b30', display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer' }}>
+                <FiLock color="#b8860b" /> Poesia Não-Listada / Privada
+              </label>
+              <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.82rem', color: '#7a6a5c', lineHeight: '1.45' }}>
+                Sua poesia não aparecerá na lista pública da página inicial. Apenas pessoas com o link direto (ex: <code>/?poesia=ID</code>) poderão visualizar.
+              </p>
             </div>
           </div>
 

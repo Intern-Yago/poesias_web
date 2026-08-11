@@ -70,10 +70,20 @@ export default function Home({ poesias = [] }) {
 
   // Deep linking check for ?poesia=ID
   useEffect(() => {
-    if (router.query?.poesia && poesiasList.length > 0) {
+    if (router.query?.poesia) {
       const found = poesiasList.find(p => p.id === router.query.poesia)
       if (found) {
         setSelectedPoetryModal(found)
+      } else {
+        // Fetch unlisted/private poetry directly by ID if accessed via link
+        fetch(`/api/poesias/get?id=${router.query.poesia}`)
+          .then(res => res.ok ? res.json() : null)
+          .then(data => {
+            if (data?.poetry) {
+              setSelectedPoetryModal(data.poetry)
+            }
+          })
+          .catch(console.error)
       }
     }
   }, [router.query, poesiasList])
@@ -334,6 +344,7 @@ export default function Home({ poesias = [] }) {
                   mensagem={poesia.mensagem}
                   autor={poesia.autor}
                   likes={poesia.likes}
+                  isPrivate={poesia.isPrivate}
                   currentUserName={activeUser?.name}
                   onDelete={handleDeletePoesia}
                   onOpenModal={(poetry) => setSelectedPoetryModal(poetry)}
@@ -428,6 +439,9 @@ export const getServerSideProps = async () => {
     }
 
     const poesias = await prisma.poetrys.findMany({
+      where: {
+        isPrivate: false
+      },
       orderBy: {
         createdAt: 'desc'
       }
@@ -439,6 +453,7 @@ export const getServerSideProps = async () => {
       autor: poesia.autor || 'Anônimo',
       mensagem: poesia.mensagem || '',
       likes: poesia.likes || 0,
+      isPrivate: Boolean(poesia.isPrivate),
       date: poesia.createdAt ? poesia.createdAt.toISOString() : new Date().toISOString()
     }))
 

@@ -10,6 +10,7 @@ export default function Card({
   autor, 
   titulo, 
   likes = 0, 
+  isPrivate = false,
   currentUserName, 
   onDelete, 
   onOpenModal,
@@ -151,7 +152,22 @@ export default function Card({
       <div className={styles.poesia}>
         {/* Header */}
         <div className={styles.cardHeader}>
-          <p className={styles.date}>{dateFormatado}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <p className={styles.date}>{dateFormatado}</p>
+            {isPrivate && (
+              <span style={{
+                fontSize: '0.7rem',
+                backgroundColor: 'rgba(184, 134, 11, 0.15)',
+                color: '#b8860b',
+                border: '1px solid rgba(184, 134, 11, 0.3)',
+                padding: '0.1rem 0.4rem',
+                borderRadius: '6px',
+                fontWeight: 600
+              }} title="Poesia privada (acessível apenas por link)">
+                🔒 Não-Listada
+              </span>
+            )}
+          </div>
 
           <div className={styles.cardActionBar}>
             {/* Copy button */}
