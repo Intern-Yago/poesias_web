@@ -458,8 +458,12 @@ export default function Home({ poesias = [] }) {
   )
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
   try {
+    if (ctx?.res) {
+      ctx.res.setHeader('Cache-Control', 'public, s-maxage=1, stale-while-revalidate=59')
+    }
+
     if (!process.env.DATABASE_URL) {
       return {
         props: {
