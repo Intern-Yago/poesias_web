@@ -50,6 +50,7 @@ export default function Home({ poesias = [] }) {
   }, [poesias])
 
   const [userLikedIds, setUserLikedIds] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
 
   // Active user session / cookies setup & liked IDs fetch
   useEffect(() => {
@@ -80,6 +81,14 @@ export default function Home({ poesias = [] }) {
         }
       })
       .catch(() => {})
+
+    // Check if logged in user is admin to conditionally show Admin button
+    fetch('/api/admin/stats')
+      .then(res => {
+        if (res.ok) setIsAdmin(true)
+        else setIsAdmin(false)
+      })
+      .catch(() => setIsAdmin(false))
   }, [session])
 
   // Deep linking check for ?poesia=ID
@@ -237,11 +246,13 @@ export default function Home({ poesias = [] }) {
               </a>
             </Link>
 
-            <Link href="/admin">
-              <a className={styles.btnAuth} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }} title="Painel de Administração">
-                <FiShield style={{ color: '#b8860b' }} /> Admin
-              </a>
-            </Link>
+            {isAdmin && (
+              <Link href="/admin">
+                <a className={styles.btnAuth} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }} title="Painel de Administração">
+                  <FiShield style={{ color: '#b8860b' }} /> Admin
+                </a>
+              </Link>
+            )}
 
             {activeUser ? (
               <div className={styles.userMenu} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
