@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { FiCopy, FiCheck, FiTrash2, FiHeart, FiShare2, FiMessageSquare, FiAlertTriangle } from 'react-icons/fi'
 import styles from '../styles/Card.module.css'
