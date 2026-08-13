@@ -41,6 +41,11 @@ export default async function handler(req, res) {
             mode: 'insensitive'
           }
         },
+        include: {
+          _count: {
+            select: { comments: true }
+          }
+        },
         orderBy: { createdAt: 'desc' }
       })
     }
@@ -53,7 +58,13 @@ export default async function handler(req, res) {
           userKey: { in: userKeys }
         },
         include: {
-          poetry: true
+          poetry: {
+            include: {
+              _count: {
+                select: { comments: true }
+              }
+            }
+          }
         },
         orderBy: { createdAt: 'desc' }
       })
@@ -71,7 +82,13 @@ export default async function handler(req, res) {
           }
         },
         include: {
-          poetry: true
+          poetry: {
+            include: {
+              _count: {
+                select: { comments: true }
+              }
+            }
+          }
         },
         orderBy: { createdAt: 'desc' }
       })
@@ -92,6 +109,7 @@ export default async function handler(req, res) {
       autor: p.autor || 'Anônimo',
       mensagem: p.mensagem || '',
       likes: p.likes || 0,
+      commentsCount: p._count?.comments || 0,
       isPrivate: Boolean(p.isPrivate),
       date: p.createdAt ? p.createdAt.toISOString() : new Date().toISOString()
     })

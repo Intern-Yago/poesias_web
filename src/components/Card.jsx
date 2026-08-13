@@ -10,6 +10,7 @@ export default function Card({
   autor, 
   titulo, 
   likes = 0, 
+  commentsCount = 0,
   isPrivate = false,
   hasLiked: initialHasLiked = false,
   currentUserName, 
@@ -117,7 +118,7 @@ export default function Card({
   const handleComment = (e) => {
     e.stopPropagation()
     if (onOpenModal) {
-      onOpenModal({ id, date, mensagem, autor, titulo, likes: likeCount })
+      onOpenModal({ id, date, mensagem, autor, titulo, likes: likeCount, commentsCount })
     }
   }
 
@@ -153,7 +154,7 @@ export default function Card({
 
   const handleCardClick = () => {
     if (onOpenModal) {
-      onOpenModal({ id, date, mensagem, autor, titulo, likes: likeCount })
+      onOpenModal({ id, date, mensagem, autor, titulo, likes: likeCount, commentsCount })
     }
   }
 
@@ -205,7 +206,7 @@ export default function Card({
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  onOpenReportModal({ id, date, mensagem, autor, titulo, likes: likeCount })
+                  onOpenReportModal({ id, date, mensagem, autor, titulo, likes: likeCount, commentsCount })
                 }}
                 className={`${styles.iconActionBtn} ${styles.iconActionBtnReport}`}
                 title="Denunciar poesia"
@@ -273,14 +274,19 @@ export default function Card({
               <span>{likeCount > 0 ? likeCount : 'Curtir'}</span>
             </button>
 
-            {/* Comment button */}
+            {/* Comment button with count / badge feedback */}
             <button 
               onClick={handleComment}
-              className={styles.actionBtn}
-              title="Ver ou adicionar comentários"
+              className={`${styles.actionBtn} ${commentsCount > 0 ? styles.hasCommentsBtn : ''}`}
+              title={commentsCount > 0 ? `${commentsCount} comentário${commentsCount > 1 ? 's' : ''}` : "Ver ou adicionar comentários"}
             >
-              <FiMessageSquare />
-              <span>Comentar</span>
+              <FiMessageSquare className={commentsCount > 0 ? styles.commentIconActive : ''} />
+              <span>{commentsCount > 0 ? 'Comentários' : 'Comentar'}</span>
+              {commentsCount > 0 && (
+                <span className={styles.commentBadge}>
+                  {commentsCount > 9 ? '9+' : commentsCount}
+                </span>
+              )}
             </button>
           </div>
 

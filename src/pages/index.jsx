@@ -20,6 +20,8 @@ import AuthRequiredModal from '../components/AuthRequiredModal'
 import ReportModal from '../components/ReportModal'
 import EditPoemModal from '../components/EditPoemModal'
 
+const VALID_ITEMS_PER_PAGE = [6, 8, 12, 16, 24]
+
 export default function Home({ poesias = [] }) {
   const router = useRouter()
   const { data: session } = useSession()
@@ -30,12 +32,13 @@ export default function Home({ poesias = [] }) {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false)
   const [filterOnlyMyPosts, setFilterOnlyMyPosts] = useState(false)
 
-  // Layout view mode: 'grid' (3 por linha) or 'list' (1 por linha)
+  // Layout view mode: 'grid' (4 em telas grandes) or 'list' (1 por linha)
   const [viewMode, setViewMode] = useState('grid')
 
-  // Pagination state
+  // Pagination state with local storage persistence
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(6)
+  const [itemsPerPage, setItemsPerPage] = useState(8)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   // Modal states
   const [selectedPoetryModal, setSelectedPoetryModal] = useState(null)
@@ -51,6 +54,48 @@ export default function Home({ poesias = [] }) {
 
   const [userLikedIds, setUserLikedIds] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
+
+  // 1. Restore itemsPerPage and currentPage from localStorage on client mount
+  useEffect(() => {
+    try {
+      const savedItems = localStorage.getItem('poesias_items_per_page')
+      if (savedItems) {
+        const parsed = parseInt(savedItems, 10)
+        if (VALID_ITEMS_PER_PAGE.includes(parsed)) {
+          setItemsPerPage(parsed)
+        }
+      }
+
+      const savedPage = localStorage.getItem('poesias_current_page')
+      if (savedPage) {
+        const parsedPage = parseInt(savedPage, 10)
+        if (parsedPage >= 1) {
+          setCurrentPage(parsedPage)
+        }
+      }
+    } catch (e) {
+      console.error("Erro ao carregar preferências de paginação:", e)
+    } finally {
+      setIsInitialized(true)
+    }
+  }, [])
+
+  // 2. Clear saved page when navigating away to another route (but keeps itemsPerPage intact)
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      const targetPath = url ? url.split('?')[0] : ''
+      if (targetPath && targetPath !== '/') {
+        try {
+          localStorage.removeItem('poesias_current_page')
+        } catch (e) {}
+      }
+    }
+
+    router.events.on('routeChangeStart', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [router.events])
 
   // Active user session / cookies setup & liked IDs fetch
   useEffect(() => {
@@ -113,12 +158,13 @@ export default function Home({ poesias = [] }) {
 
   // Reset page when search or filter changes
   useEffect(() => {
-    setCurrentPage(1)
-  }, [searchTerm, filterOnlyMyPosts])
-
-  const userPoesiasCount = activeUser
-    ? poesiasList.filter(p => p.autor?.toLowerCase() === activeUser.name?.toLowerCase()).length
-    : 0
+    if (isInitialized) {
+      setCurrentPage(1)
+      try {
+        localStorage.setItem('poesias_current_page', '1')
+      } catch (e) {}
+    }
+  }, [searchTerm, filterOnlyMyPosts, isInitialized])
 
   const filteredPoesias = poesiasList.filter((poesia) => {
     if (filterOnlyMyPosts && activeUser?.name) {
@@ -136,16 +182,49 @@ export default function Home({ poesias = [] }) {
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredPoesias.length / itemsPerPage) || 1
+  
+  // Guard if currentPage exceeds totalPages
+  useEffect(() => {
+    if (isInitialized && currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+      try {
+        localStorage.setItem('poesias_current_page', String(totalPages))
+      } catch (e) {}
+    }
+  }, [currentPage, totalPages, isInitialized])
+
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedPoesias = filteredPoesias.slice(startIndex, startIndex + itemsPerPage)
 
   function handlePageChange(newPage) {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage)
+      try {
+        localStorage.setItem('poesias_current_page', String(newPage))
+      } catch (e) {}
       if (feedRef.current) {
         feedRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     }
+  }
+
+  function handleItemsPerPageChange(newValue) {
+    const val = Number(newValue)
+    setItemsPerPage(val)
+    setCurrentPage(1)
+    try {
+      localStorage.setItem('poesias_items_per_page', String(val))
+      localStorage.setItem('poesias_current_page', '1')
+    } catch (e) {}
+  }
+
+  function handleCommentAdded(poetryId) {
+    setPoesiasList(prev => prev.map(p => {
+      if (p.id === poetryId) {
+        return { ...p, commentsCount: (p.commentsCount || 0) + 1 }
+      }
+      return p
+    }))
   }
 
   function handleDeletePoesia(deletedId) {
@@ -161,14 +240,6 @@ export default function Home({ poesias = [] }) {
     destroyCookie(undefined, 'user_email', { path: '/' })
     setActiveUser(null)
     signOut({ callbackUrl: '/' })
-  }
-
-  function handleFilterMyPoesias(authorName) {
-    const nameToFilter = authorName || activeUser?.name
-    if (nameToFilter) {
-      setSearchTerm(nameToFilter)
-      setFilterOnlyMyPosts(true)
-    }
   }
 
   function handleLoginSuccess(userInfo) {
@@ -200,6 +271,7 @@ export default function Home({ poesias = [] }) {
         onEditPoetry={(poetry) => setEditingPoetry(poetry)}
         onOpenReportModal={(poetry) => setSelectedReportPoetry(poetry)}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
+        onCommentAdded={handleCommentAdded}
       />
 
       {/* Edit Poem Modal */}
@@ -233,7 +305,15 @@ export default function Home({ poesias = [] }) {
       <header className={styles.headerNav}>
         <div className={styles.navContainer}>
           <Link href="/">
-            <a className={styles.brandLogo} onClick={() => { setSearchTerm(''); setFilterOnlyMyPosts(false); }}>
+            <a 
+              className={styles.brandLogo} 
+              onClick={() => { 
+                setSearchTerm('')
+                setFilterOnlyMyPosts(false)
+                setCurrentPage(1)
+                try { localStorage.setItem('poesias_current_page', '1') } catch (e) {}
+              }}
+            >
               <FiBookOpen className={styles.brandIcon} />
               <span>Poesias</span>
             </a>
@@ -338,12 +418,29 @@ export default function Home({ poesias = [] }) {
           </div>
 
           <div className={styles.feedHeaderControls}>
-            {/* Disposition switcher (Grid 3 per row vs List 1 per row) */}
+            {/* Items Per Page Selector (Placed on Top) */}
+            <div className={styles.itemsPerPageControl}>
+              <span>Exibir:</span>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => handleItemsPerPageChange(e.target.value)}
+                className={styles.itemsSelect}
+                title="Quantidade de poesias por página"
+              >
+                <option value={6}>6 por página</option>
+                <option value={8}>8 por página</option>
+                <option value={12}>12 por página</option>
+                <option value={16}>16 por página</option>
+                <option value={24}>24 por página</option>
+              </select>
+            </div>
+
+            {/* Disposition switcher (Grid 4 per row vs List 1 per row) */}
             <div className={styles.viewToggleGroup}>
               <button
                 onClick={() => setViewMode('grid')}
                 className={`${styles.toggleBtn} ${viewMode === 'grid' ? styles.toggleBtnActive : ''}`}
-                title="Visualização em Grade (3 por linha)"
+                title="Visualização em Grade (até 4 por linha)"
               >
                 <FiGrid /> <span>Grade</span>
               </button>
@@ -384,6 +481,7 @@ export default function Home({ poesias = [] }) {
                   mensagem={poesia.mensagem}
                   autor={poesia.autor}
                   likes={poesia.likes}
+                  commentsCount={poesia.commentsCount || 0}
                   isPrivate={poesia.isPrivate}
                   hasLiked={userLikedIds.includes(poesia.id)}
                   currentUserName={activeUser?.name}
@@ -438,23 +536,14 @@ export default function Home({ poesias = [] }) {
                     Exibir:
                     <select
                       value={itemsPerPage}
-                      onChange={(e) => {
-                        setItemsPerPage(Number(e.target.value))
-                        setCurrentPage(1)
-                      }}
-                      style={{
-                        padding: '0.2rem 0.5rem',
-                        borderRadius: '8px',
-                        border: '1px solid #dcd0c0',
-                        fontSize: '0.85rem',
-                        color: '#4a3b30',
-                        backgroundColor: '#fff'
-                      }}
+                      onChange={(e) => handleItemsPerPageChange(e.target.value)}
+                      className={styles.itemsSelect}
                     >
                       <option value={6}>6 por página</option>
-                      <option value={9}>9 por página</option>
+                      <option value={8}>8 por página</option>
                       <option value={12}>12 por página</option>
-                      <option value={18}>18 por página</option>
+                      <option value={16}>16 por página</option>
+                      <option value={24}>24 por página</option>
                     </select>
                   </label>
                 </div>
@@ -487,6 +576,11 @@ export const getServerSideProps = async (ctx) => {
       where: {
         isPrivate: false
       },
+      include: {
+        _count: {
+          select: { comments: true }
+        }
+      },
       orderBy: {
         createdAt: 'desc'
       }
@@ -498,6 +592,7 @@ export const getServerSideProps = async (ctx) => {
       autor: poesia.autor || 'Anônimo',
       mensagem: poesia.mensagem || '',
       likes: poesia.likes || 0,
+      commentsCount: poesia._count?.comments || 0,
       isPrivate: Boolean(poesia.isPrivate),
       date: poesia.createdAt ? poesia.createdAt.toISOString() : new Date().toISOString()
     }))

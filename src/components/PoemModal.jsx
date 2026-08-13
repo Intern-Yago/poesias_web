@@ -13,7 +13,8 @@ export default function PoemModal({
   onDelete,
   onEditPoetry,
   onOpenReportModal,
-  onOpenAuthModal
+  onOpenAuthModal,
+  onCommentAdded
 }) {
   const [likes, setLikes] = useState(poetry?.likes || 0)
   const [hasLiked, setHasLiked] = useState(false)
@@ -185,6 +186,9 @@ export default function PoemModal({
       if (res.ok && data.comment) {
         setComments(prev => [...prev, data.comment])
         setNewCommentText('')
+        if (onCommentAdded && poetry?.id) {
+          onCommentAdded(poetry.id)
+        }
       } else {
         alert(data.error || 'Erro ao enviar comentário.')
       }

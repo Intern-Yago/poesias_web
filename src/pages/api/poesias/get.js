@@ -13,7 +13,12 @@ export default async function handler(req, res) {
     }
 
     const poetry = await prisma.poetrys.findUnique({
-      where: { id: String(id) }
+      where: { id: String(id) },
+      include: {
+        _count: {
+          select: { comments: true }
+        }
+      }
     })
 
     if (!poetry) {
@@ -27,6 +32,7 @@ export default async function handler(req, res) {
         autor: poetry.autor || 'Anônimo',
         mensagem: poetry.mensagem || '',
         likes: poetry.likes || 0,
+        commentsCount: poetry._count?.comments || 0,
         isPrivate: Boolean(poetry.isPrivate),
         date: poetry.createdAt ? poetry.createdAt.toISOString() : new Date().toISOString()
       }
